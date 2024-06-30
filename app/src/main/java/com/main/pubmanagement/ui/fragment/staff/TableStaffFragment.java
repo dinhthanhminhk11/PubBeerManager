@@ -13,10 +13,11 @@ import android.view.ViewGroup;
 import com.main.pubmanagement.R;
 import com.main.pubmanagement.base.BaseFragment;
 import com.main.pubmanagement.databinding.FragmentTableStaffBinding;
+import com.main.pubmanagement.ui.adapter.ViewPageAdapter;
 
 
 public class TableStaffFragment extends BaseFragment<FragmentTableStaffBinding> {
-
+    private ViewPageAdapter viewPager;
     @Override
     protected FragmentTableStaffBinding inflateBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
         return FragmentTableStaffBinding.inflate(inflater, container, false);
@@ -26,5 +27,8 @@ public class TableStaffFragment extends BaseFragment<FragmentTableStaffBinding> 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        viewPager = new ViewPageAdapter(this.getChildFragmentManager());
+        binding.viewpager.setAdapter(viewPager);
+        binding.tabLayout.setupWithViewPager(binding.viewpager);
     }
 }

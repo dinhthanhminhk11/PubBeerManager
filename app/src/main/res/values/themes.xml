@@ -14,6 +14,8 @@
         <!-- Customize your theme here. -->
         <item name="android:windowIsTranslucent">true</item>
     </style>
-
+    <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
     <style name="Theme.PubManagement" parent="Base.Theme.PubManagement" />
 </resources>

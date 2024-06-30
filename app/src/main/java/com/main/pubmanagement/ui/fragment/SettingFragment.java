@@ -14,11 +14,7 @@ import com.main.pubmanagement.R;
 import com.main.pubmanagement.base.BaseFragment;
 import com.main.pubmanagement.databinding.FragmentSettingBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class SettingFragment extends BaseFragment<FragmentSettingBinding> {
     @Override
     protected FragmentSettingBinding inflateBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
