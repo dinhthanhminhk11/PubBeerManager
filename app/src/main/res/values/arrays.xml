@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="ld_mannager_title">
+        <item>@string/home_manager</item>
+        <item>@string/product_manager</item>
+        <item />
+        <item>@string/bill_manager</item>
+        <item>@string/fund_number_manager</item>
+        <item />
+        <item>@string/setting</item>
+        <item>@string/logout</item>
+    </string-array>
+
+
+    <string-array name="ld_staff_title">
+        <item>@string/table_staff</item>
+        <item />
+        <item>@string/history_staff</item>
+        <item>@string/report_last_day_staff</item>
+        <item />
+        <item>@string/setting</item>
+        <item>@string/logout</item>
+    </string-array>
+
+    <array name="ld_staff_icon">
+        <item>@drawable/ic_table_staff</item>
+        <item>0</item>
+        <item>@drawable/ic_bill_manager</item>
+        <item>@drawable/ic_fund_number_manager</item>
+        <item>0</item>
+        <item>@drawable/ic_setting</item>
+        <item>@drawable/ic_logout</item>
+    </array>
+
+    <array name="ld_mannager_icon">
+        <item>@drawable/ic_home_manager</item>
+        <item>@drawable/ic_product_manager</item>
+        <item>0</item>
+        <item>@drawable/ic_bill_manager</item>
+        <item>@drawable/ic_fund_number_manager</item>
+        <item>0</item>
+        <item>@drawable/ic_setting</item>
+        <item>@drawable/ic_logout</item>
+    </array>
+
+    <array name="initial_slider_values">
+        <item>120000</item>
+        <item>5000000</item>
+    </array>
+</resources>

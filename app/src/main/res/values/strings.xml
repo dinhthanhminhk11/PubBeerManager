@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">PubManagement</string>
+    <string name="srn_drawer_open">Open</string>
+    <string name="srn_drawer_close">Close</string>
+
+    <string name="srn_ex_no_menu_view">No view for menu provided. You must either call .withMenuView(View) or pass a valid resource id to .withMenuLayout(int)</string>
+    <string name="srn_ex_bad_content_view">Your content view must contain exactly one child. Make sure you call inject() after setContentView().</string>
+
+    <string name="home_manager">Tổng quan</string>
+    <string name="product_manager">Hàng hóa</string>
+    <string name="bill_manager">Hóa đơn</string>
+    <string name="fund_number_manager">Số quý</string>
+    <string name="setting">Cài đặt</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="table_staff">Phòng bàn</string>
+    <string name="history_staff">Lịch sử đơn hàng</string>
+    <string name="report_last_day_staff">Báo cáo cuối ngày</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
