@@ -371,6 +371,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
                 + AppConstant.COLUMN_BILL_ID + " INTEGER PRIMARY KEY ,"
                 + AppConstant.COLUMN_BILL_TYPE + " INTEGER NOT NULL,"
                 + AppConstant.COLUMN_USER_ID + " INTEGER REFERENCES " + AppConstant.TABLE_USER + "( " + AppConstant.COLUMN_USER_ID + "),"
+                + AppConstant.COLUMN_RESTAURANT_ID + " INTEGER REFERENCES " + AppConstant.TABLE_TABLE_RESTAURANT + "( " + AppConstant.COLUMN_RESTAURANT_ID + "),"
                 + AppConstant.COLUMN_BILL_PRICE + " INTEGER NOT NULL ,"
                 + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + " INTEGER NOT NULL ,"
                 + AppConstant.COLUMN_BILL_TIME + " TEXT NOT NULL, "

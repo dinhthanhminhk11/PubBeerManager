@@ -86,7 +86,7 @@ public class PayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 long currentTimeMillis = Instant.now().toEpochMilli();
                 long result = billController.createBill(new Bill(
-                        0, payment, MySharedPreferences.getInstance(PayActivity.this).getInt(AppConstant.COLUMN_USER_ID, 0), sumPrice, getTotalDiscountedPrice()
+                        0, payment, MySharedPreferences.getInstance(PayActivity.this).getInt(AppConstant.COLUMN_USER_ID, 0), idTable, sumPrice, getTotalDiscountedPrice()
                         , String.valueOf(currentTimeMillis), countPerson
                 ));
                 if (result > 0) {

@@ -4,14 +4,26 @@ public class Bill {
     private int id;
     private int type;
     private int idUser;
+    private int idTable;
     private int price;
     private int priceDiscount;
     private String time;
     private int countPerson;
+    private String nameTable;
+
+
+    public String getNameTable() {
+        return nameTable;
+    }
+
+    public void setNameTable(String nameTable) {
+        this.nameTable = nameTable;
+    }
+
     public Bill() {
     }
 
-    public Bill(int id, int type, int idUser, int price, int priceDiscount, String time,int countPerson) {
+    public Bill(int id, int type, int idUser, int idTable,int price, int priceDiscount, String time,int countPerson) {
         this.id = id;
         this.type = type;
         this.idUser = idUser;
@@ -19,6 +31,15 @@ public class Bill {
         this.priceDiscount = priceDiscount;
         this.time = time;
         this.countPerson =countPerson;
+        this.idTable = idTable;
+    }
+
+    public int getIdTable() {
+        return idTable;
+    }
+
+    public void setIdTable(int idTable) {
+        this.idTable = idTable;
     }
 
     public int getCountPerson() {
