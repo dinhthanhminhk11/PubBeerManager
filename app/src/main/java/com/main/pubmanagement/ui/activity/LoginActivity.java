@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
                     MySharedPreferences.getInstance(LoginActivity.this).putString(AppConstant.COLUMN_USER_USERNAME, binding.edEmail.getText().toString());
                     MySharedPreferences.getInstance(LoginActivity.this).putString(AppConstant.COLUMN_USER_PASSWORD, binding.edPass.getText().toString());
                     MySharedPreferences.getInstance(LoginActivity.this).putInt(AppConstant.COLUMN_USER_ROLE, user.getRole());
+                    MySharedPreferences.getInstance(LoginActivity.this).putInt(AppConstant.COLUMN_USER_ID, user.getId());
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {

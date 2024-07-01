@@ -40,6 +40,11 @@ public class UsingTableFragment extends BaseFragment<FragmentUsingTableBinding> 
         });
         binding.listTable.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         binding.listTable.setAdapter(tableAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         tableAdapter.setData(tableController.getListTableByStatus(true));
     }
 }

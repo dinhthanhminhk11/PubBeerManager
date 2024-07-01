@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.main.pubmanagement.base.BaseFragment;
 import com.main.pubmanagement.constant.AppConstant;
 import com.main.pubmanagement.controller.StoreyController;
@@ -21,6 +22,7 @@ import com.main.pubmanagement.databinding.FragmentAllStoreysAndTableBinding;
 import com.main.pubmanagement.model.Storey;
 import com.main.pubmanagement.model.Table;
 import com.main.pubmanagement.ui.activity.AddBillActivity;
+import com.main.pubmanagement.ui.activity.EditBillActivity;
 import com.main.pubmanagement.ui.adapter.StoreyAdapter;
 import com.main.pubmanagement.ui.adapter.TableAdapter;
 
@@ -33,6 +35,7 @@ public class AllStoreysAndTableFragment extends BaseFragment<FragmentAllStoreysA
     private StoreyController storeyController;
     private TableController tableController;
     private TableAdapter tableAdapter;
+    private List<Table> tableList;
 
     @Override
     protected FragmentAllStoreysAndTableBinding inflateBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
@@ -44,6 +47,7 @@ public class AllStoreysAndTableFragment extends BaseFragment<FragmentAllStoreysA
         super.onViewCreated(view, savedInstanceState);
         storeyController = new StoreyController(getActivity());
         tableController = new TableController(getActivity());
+        tableList = new ArrayList<>();
         storeyAdapter = new StoreyAdapter(storeyController.getListStorey(), new StoreyAdapter.Callback() {
             @Override
             public void callbackCLick(int position) {
@@ -61,6 +65,12 @@ public class AllStoreysAndTableFragment extends BaseFragment<FragmentAllStoreysA
                     Intent intent = new Intent(getActivity(), AddBillActivity.class);
                     intent.putExtra(AppConstant.TABLE_TABLE_RESTAURANT, table);
                     startActivity(intent);
+                } else {
+                    long id = tableController.getOrdersByRestaurantId(table.getId()).get(0).getId();
+                    Intent intent = new Intent(getActivity(), EditBillActivity.class);
+                    intent.putExtra(AppConstant.COLUMN_ORDER_ID, id);
+                    intent.putExtra(AppConstant.TABLE_TABLE_RESTAURANT, table);
+                    startActivity(intent);
                 }
 
             }
@@ -71,12 +81,26 @@ public class AllStoreysAndTableFragment extends BaseFragment<FragmentAllStoreysA
         binding.listCategoryHomeFragment.setAdapter(storeyAdapter);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        tableList = tableController.getListTable();
+        iniDataListAll();
+    }
+
 
     private void iniDataListAll() {
-        tableAdapter.setData(tableController.getListTable());
+        tableAdapter.setData(tableList);
     }
 
     private void iniDataListById(int id) {
-        tableAdapter.setData(tableController.getListTableByIdStorey(id));
+        List<Table> tableListSoft = new ArrayList<>();
+        for (Table tab :
+                tableList) {
+            if (tab.getIdStorey() == id) {
+                tableListSoft.add(tab);
+            }
+        }
+        tableAdapter.setData(tableListSoft);
     }
 }

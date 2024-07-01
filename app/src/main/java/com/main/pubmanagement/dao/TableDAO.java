@@ -1,5 +1,6 @@
 package com.main.pubmanagement.dao;
 
+import com.main.pubmanagement.model.Order;
 import com.main.pubmanagement.model.Storey;
 import com.main.pubmanagement.model.Table;
 
@@ -16,4 +17,5 @@ public interface TableDAO {
 
     List<Table> getListTableByIdStorey(int id);
     List<Table> getListTableByStatus(boolean status);
+    List<Order> getOrdersByRestaurantId(int restaurantId);
 }

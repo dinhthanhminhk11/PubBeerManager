@@ -29,8 +29,134 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/listCategory"
-        android:layout_marginHorizontal="@dimen/_16dp"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2" />
+
+    <LinearLayout
+        android:id="@+id/layoutAddBill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/gradientbackground_white"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/_12dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
+
+            <TextView
+                android:id="@+id/countCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mặt hàng (0 mặt hàng)"
+                android:textColor="#CCCCCC"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/countCardPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="0 $"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Khách"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/sumPerson"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="right"
+                android:inputType="number"
+                android:hint="0"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng (+ 10% VAT)"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/sumPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="0 $"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/clear"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_below="@+id/btnAddBill"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_buttom_gray"
+                android:text="Chọn Lại"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/sumit"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_below="@+id/btnAddBill"
+                android:layout_margin="@dimen/_10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_buttom"
+                android:text="Thêm vào đơn"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@null" />
+
+
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

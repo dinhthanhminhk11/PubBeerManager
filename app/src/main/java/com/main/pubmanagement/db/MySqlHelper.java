@@ -45,24 +45,24 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
         sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'01' , 6, 0 , 1)";
         sqLiteDatabase.execSQL(sql1);
-        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'02' , 3, 1 , 2)";
+        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'02' , 3, 0 , 2)";
         sqLiteDatabase.execSQL(sql1);
-        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'03' , 2, 1 , 2)";
+        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'03' , 2, 0 , 2)";
         sqLiteDatabase.execSQL(sql1);
         sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'04' , 4, 0 , 3)";
         sqLiteDatabase.execSQL(sql1);
-        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'05' , 4, 1 , 4)";
+        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'05' , 4, 0 , 4)";
         sqLiteDatabase.execSQL(sql1);
         sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'06' , 4, 0 , 4)";
         sqLiteDatabase.execSQL(sql1);
-        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'07' , 4, 1 , 4)";
+        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'07' , 4, 0 , 4)";
         sqLiteDatabase.execSQL(sql1);
         sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'08' , 4, 0 , 4)";
         sqLiteDatabase.execSQL(sql1);
 
         sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'09' , 4, 0 , 3)";
         sqLiteDatabase.execSQL(sql1);
-        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'10' , 4, 1 , 3)";
+        sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'10' , 4, 0 , 3)";
         sqLiteDatabase.execSQL(sql1);
         sql1 = "INSERT INTO " + AppConstant.TABLE_TABLE_RESTAURANT + " VALUES ( null ,'11' , 4, 0 , 2)";
         sqLiteDatabase.execSQL(sql1);
@@ -98,7 +98,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
                 + AppConstant.COLUMN_MENU_PRICE + " INTEGER NOT NULL ,"
                 + AppConstant.COLUMN_MENU_UNIT + " INTEGER NOT NULL , "
                 + AppConstant.COLUMN_MENU_TYPE_ID + " INTEGER REFERENCES " + AppConstant.TABLE_MENU_TYPE + "( " + AppConstant.COLUMN_MENU_TYPE_ID + "),"
-                + AppConstant.COLUMN_MENU_DISCOUNT + " INTEGER"
+                + AppConstant.COLUMN_MENU_DISCOUNT + " INTEGER DEFAULT 0"
                 + ")";
         sqLiteDatabase.execSQL(sql1);
 
@@ -332,6 +332,62 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sql1 = "INSERT INTO " + AppConstant.TABLE_MENU + "(" + AppConstant.COLUMN_MENU_ID + "," + AppConstant.COLUMN_MENU_NAME + "," + AppConstant.COLUMN_MENU_PRICE + "," + AppConstant.COLUMN_MENU_UNIT + "," + AppConstant.COLUMN_MENU_TYPE_ID + ")" + " VALUES ( null ,'Nước Suối' , 15000 , 8 , 9)";
         sqLiteDatabase.execSQL(sql1);
 
+
+        sql1 = "UPDATE " + AppConstant.TABLE_MENU + " SET " + AppConstant.COLUMN_MENU_DISCOUNT + "=" + 10 + " WHERE " + AppConstant.COLUMN_MENU_ID + " = " + 1;
+        sqLiteDatabase.execSQL(sql1);
+        sql1 = "UPDATE " + AppConstant.TABLE_MENU + " SET " + AppConstant.COLUMN_MENU_DISCOUNT + "=" + 20 + " WHERE " + AppConstant.COLUMN_MENU_ID + " = " + 4;
+        sqLiteDatabase.execSQL(sql1);
+        sql1 = "UPDATE " + AppConstant.TABLE_MENU + " SET " + AppConstant.COLUMN_MENU_DISCOUNT + "=" + 30 + " WHERE " + AppConstant.COLUMN_MENU_ID + " = " + 5;
+        sqLiteDatabase.execSQL(sql1);
+        sql1 = "UPDATE " + AppConstant.TABLE_MENU + " SET " + AppConstant.COLUMN_MENU_DISCOUNT + "=" + 40 + " WHERE " + AppConstant.COLUMN_MENU_ID + " = " + 6;
+        sqLiteDatabase.execSQL(sql1);
+
+
+        sql1 = "CREATE TABLE " + AppConstant.TABLE_ORDER + "("
+                + AppConstant.COLUMN_ORDER_ID + " INTEGER PRIMARY KEY ,"
+                + AppConstant.COLUMN_USER_ID + " INTEGER REFERENCES " + AppConstant.TABLE_USER + "( " + AppConstant.COLUMN_USER_ID + "),"
+                + AppConstant.COLUMN_RESTAURANT_ID + " INTEGER REFERENCES " + AppConstant.TABLE_TABLE_RESTAURANT + "( " + AppConstant.COLUMN_RESTAURANT_ID + "),"
+                + AppConstant.COLUMN_ORDER_STATUS + " INTEGER NOT NULL ,"
+                + AppConstant.COLUMN_ORDER_CREATE_AT + " TEXT NOT NULL ,"
+                + AppConstant.COLUMN_ORDER_TOTAL_PRICE + " INTEGER NOT NULL,"
+                + AppConstant.COLUMN_ORDER_PERSON + " INTEGER NOT NULL"
+                + ")";
+        sqLiteDatabase.execSQL(sql1);
+
+
+        sql1 = "CREATE TABLE " + AppConstant.TABLE_ORDER_DETAIL + "("
+                + AppConstant.COLUMN_ORDER_DETAIL_ID + " INTEGER PRIMARY KEY ,"
+                + AppConstant.COLUMN_ORDER_ID + " INTEGER REFERENCES " + AppConstant.TABLE_ORDER + "( " + AppConstant.COLUMN_ORDER_ID + "),"
+                + AppConstant.COLUMN_ORDER_DETAIL_QUANTITY + " INTEGER NOT NULL ,"
+                + AppConstant.COLUMN_ORDER_DETAIL_DISCOUNT + " INTEGER NOT NULL ,"
+                + AppConstant.COLUMN_ORDER_DETAIL_PRICE + " INTEGER NOT NULL, "
+                + AppConstant.COLUMN_ORDER_DETAIL_NAME + " TEXT NOT NULL,"
+                + AppConstant.COLUMN_ORDER_DETAIL_ID_MENU + " INTEGER NOT NULL"
+                + ")";
+        sqLiteDatabase.execSQL(sql1);
+
+
+        sql1 = "CREATE TABLE " + AppConstant.TABLE_BILL + "("
+                + AppConstant.COLUMN_BILL_ID + " INTEGER PRIMARY KEY ,"
+                + AppConstant.COLUMN_BILL_TYPE + " INTEGER ,"
+                + AppConstant.COLUMN_USER_ID + " INTEGER REFERENCES " + AppConstant.TABLE_USER + "( " + AppConstant.COLUMN_USER_ID + "),"
+                + AppConstant.COLUMN_BILL_PRICE + " INTEGER NOT NULL ,"
+                + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + " INTEGER NOT NULL ,"
+                + AppConstant.COLUMN_BILL_TIME + " TEXT NOT NULL, "
+                + AppConstant.COLUMN_BILL_COUNT_PERSON + " INTEGER NOT NULL"
+                + ")";
+        sqLiteDatabase.execSQL(sql1);
+
+        sql1 = "CREATE TABLE " + AppConstant.TABLE_BILL_INFO + "("
+                + AppConstant.TABLE_BILL_INFO + " INTEGER PRIMARY KEY ,"
+                + AppConstant.COLUMN_BILL_ID + " INTEGER REFERENCES " + AppConstant.TABLE_BILL + "( " + AppConstant.COLUMN_BILL_ID + "),"
+                + AppConstant.COLUMN_MENU_ID + " INTEGER REFERENCES " + AppConstant.TABLE_MENU + "( " + AppConstant.COLUMN_MENU_ID + "),"
+                + AppConstant.COLUMN_BILL_INFO_QUANTITY + " INTEGER NOT NULL ,"
+                + AppConstant.COLUMN_BILL_INFO_DISCOUNT + " INTEGER NOT NULL"
+                + ")";
+        sqLiteDatabase.execSQL(sql1);
+
+
     }
 
     @Override
@@ -345,6 +401,10 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AppConstant.TABLE_MENU_TYPE);
         onCreate(sqLiteDatabase);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AppConstant.TABLE_MENU);
+        onCreate(sqLiteDatabase);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AppConstant.TABLE_ORDER);
+        onCreate(sqLiteDatabase);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AppConstant.TABLE_ORDER_DETAIL);
         onCreate(sqLiteDatabase);
     }
 }

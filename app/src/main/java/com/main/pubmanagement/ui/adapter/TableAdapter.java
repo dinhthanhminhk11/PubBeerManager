@@ -55,21 +55,20 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
             }
             holder.itemTableBinding.chair.setText(table.getCountChair() + " người");
 
-            if (table.getStatus() == 1) {
-                holder.itemView.setBackgroundResource(R.drawable.back_ground_item_select);
-                holder.itemTableBinding.name.setTextColor(Color.WHITE);
-                holder.itemTableBinding.nameStorey.setTextColor(Color.WHITE);
-                holder.itemTableBinding.chair.setTextColor(Color.WHITE);
-                holder.itemTableBinding.name.setTypeface(null, Typeface.BOLD);
-            } else {
+            if (table.getStatus() == 0) {
                 holder.itemView.setBackgroundColor(Color.TRANSPARENT);
                 holder.itemView.setBackgroundResource(R.drawable.back_ground_item_no_select);
                 holder.itemTableBinding.name.setTextColor(Color.BLACK);
                 holder.itemTableBinding.nameStorey.setTextColor(Color.GRAY);
                 holder.itemTableBinding.chair.setTextColor(Color.BLACK);
                 holder.itemTableBinding.name.setTypeface(null, Typeface.NORMAL);
+            } else {
+                holder.itemView.setBackgroundResource(R.drawable.back_ground_item_select);
+                holder.itemTableBinding.name.setTextColor(Color.WHITE);
+                holder.itemTableBinding.nameStorey.setTextColor(Color.WHITE);
+                holder.itemTableBinding.chair.setTextColor(Color.WHITE);
+                holder.itemTableBinding.name.setTypeface(null, Typeface.BOLD);
             }
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

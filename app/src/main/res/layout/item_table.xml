@@ -41,5 +41,4 @@
         android:text="(6 người)"
         android:textColor="@color/black" />
 
-
 </LinearLayout>

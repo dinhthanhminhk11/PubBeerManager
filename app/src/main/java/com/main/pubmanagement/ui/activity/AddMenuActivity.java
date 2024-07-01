@@ -1,11 +1,9 @@
 package com.main.pubmanagement.ui.activity;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,7 +16,7 @@ import com.main.pubmanagement.controller.MenuController;
 import com.main.pubmanagement.controller.MenuTypeController;
 import com.main.pubmanagement.controller.OderController;
 import com.main.pubmanagement.databinding.ActivityAddBillBinding;
-import com.main.pubmanagement.databinding.ActivityLoginBinding;
+import com.main.pubmanagement.databinding.ActivityAddMenuBinding;
 import com.main.pubmanagement.model.Menu;
 import com.main.pubmanagement.model.Order;
 import com.main.pubmanagement.model.OrderDetails;
@@ -35,9 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class AddBillActivity extends AppCompatActivity {
+public class AddMenuActivity extends AppCompatActivity {
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
-    private ActivityAddBillBinding binding;
+    private ActivityAddMenuBinding binding;
     private Table table;
     private StoreyAdapter storeyAdapter;
     private MenuTypeController menuTypeController;
@@ -46,21 +44,24 @@ public class AddBillActivity extends AppCompatActivity {
     private List<Menu> menuList;
     private HashMap<Menu, Integer> cartMap;
     private OderController oderController;
-    private int finalSum = 0;
+    private List<OrderDetails> listOrderDetails;
+    private long idOrder;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddBillBinding.inflate(getLayoutInflater());
+        binding = ActivityAddMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        table = (Table) getIntent().getExtras().get(AppConstant.TABLE_TABLE_RESTAURANT);
         initToolBar();
         menuList = new ArrayList<>();
+        listOrderDetails = new ArrayList<>();
         menuTypeController = new MenuTypeController(this);
         menuController = new MenuController(this);
         oderController = new OderController(this);
         menuList = menuController.getListMenu();
+        listOrderDetails = (List<OrderDetails>) getIntent().getSerializableExtra(AppConstant.COLUMN_ORDER_DETAIL_NAME);
+        idOrder = getIntent().getLongExtra(AppConstant.COLUMN_ORDER_ID, -1);
+
         storeyAdapter = new StoreyAdapter(menuTypeController.getListMenuType(), new StoreyAdapter.Callback() {
             @Override
             public void callbackCLick(int position) {
@@ -88,93 +89,60 @@ public class AddBillActivity extends AppCompatActivity {
                     Integer value = entry.getValue();
                     sum += ((key.getPrice() * value) - (key.getPrice() * convertIntToFloat(key.getDiscount())));
                 }
-                finalSum = (int) (sum + (sum * 0.1));
-                AddBillActivity.this.cartMap = cartMap;
+                AddMenuActivity.this.cartMap = cartMap;
                 binding.countCardPrice.setText(decimalFormat.format(sum) + " ₫");
                 binding.sumPrice.setText(decimalFormat.format(sum + (sum * 0.1)) + " ₫");
             }
         });
+
         binding.listProduct.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.listProduct.setAdapter(menuAdapter);
-
-        binding.sumit.setEnabled(false);
-        binding.sumit.setAlpha(0.4f);
-        binding.sumPerson.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try {
-                    int inputValue = Integer.parseInt(s.toString());
-                    if (inputValue > 0 && inputValue < 15) {
-                        binding.sumit.setEnabled(true);
-                        binding.sumit.setAlpha(1);
-                    } else {
-                        binding.sumit.setEnabled(false);
-                        binding.sumit.setAlpha(0.4f);
-                    }
-                } catch (NumberFormatException e) {
-                    binding.sumit.setEnabled(false);
-                    binding.sumit.setAlpha(0.4f);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
 
         binding.clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 menuAdapter.clear();
-                binding.sumPerson.setText("");
             }
         });
 
         binding.sumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long currentTimeMillis = Instant.now().toEpochMilli();
-
-                long result = oderController.create(new Order(
-                        0,
-                        MySharedPreferences.getInstance(AddBillActivity.this).getInt(AppConstant.COLUMN_USER_ID, 0),
-                        table.getId(),
-                        0,
-                        String.valueOf(currentTimeMillis),
-                        finalSum,
-                        Integer.parseInt(binding.sumPerson.getText().toString())
-                ));
-                if (result > 0) {
-                    Set<Map.Entry<Menu, Integer>> entries = cartMap.entrySet();
-                    for (Map.Entry<Menu, Integer> entry : entries) {
-                        Menu key = entry.getKey();
-                        Integer value = entry.getValue();
-                        oderController.createOrderDetail(new OrderDetails(
-                                0,
-                                Integer.parseInt(String.valueOf(result)),
-                                value,
-                                key.getDiscount(),
-                                key.getPrice(),
-                                key.getName(),
-                                key.getId()
-                        ));
-                    }
-                    Toast.makeText(AddBillActivity.this, "Order Thành Công", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(AddBillActivity.this, EditBillActivity.class);
-                    intent.putExtra(AppConstant.COLUMN_ORDER_ID, result);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(AddBillActivity.this, "Order Thất Bại", Toast.LENGTH_SHORT).show();
-
-                }
+                removeOrderDetail();
+                addOrderDetail();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("cartMap", cartMap);
+                setResult(RESULT_OK, resultIntent);
+                finish();
             }
         });
+    }
 
+    private void initToolBar() {
+        binding.toolBar.setTitle("Chọn Món");
+        binding.toolBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24);
+        binding.toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
+
+    private void iniDataListAll() {
+        menuAdapter.setData(menuList);
+        menuAdapter.setDataOrderDetail(listOrderDetails);
+    }
+
+    private void iniDataListById(int id) {
+        List<Menu> menuListSoft = new ArrayList<>();
+        for (Menu menu : menuList
+        ) {
+            if (menu.getIdMenuType() == id) {
+                menuListSoft.add(menu);
+            }
+        }
+        menuAdapter.setData(menuListSoft);
     }
 
     private void loadData(int position) {
@@ -193,29 +161,24 @@ public class AddBillActivity extends AppCompatActivity {
         }
     }
 
-    private void initToolBar() {
-        binding.toolBar.setTitle("Bàn " + table.getName() + " " + table.getNameStorey());
-        binding.toolBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24);
-        binding.toolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-    }
-
-    private void iniDataListAll() {
-        menuAdapter.setData(menuList);
-    }
-
-    private void iniDataListById(int id) {
-        List<Menu> menuListSoft = new ArrayList<>();
-        for (Menu menu : menuList
-        ) {
-            if (menu.getIdMenuType() == id) {
-                menuListSoft.add(menu);
-            }
+    private void addOrderDetail() {
+        Set<Map.Entry<Menu, Integer>> entries = cartMap.entrySet();
+        for (Map.Entry<Menu, Integer> entry : entries) {
+            Menu key = entry.getKey();
+            Integer value = entry.getValue();
+            oderController.createOrderDetail(new OrderDetails(
+                    0,
+                    Integer.parseInt(String.valueOf(idOrder)),
+                    value,
+                    key.getDiscount(),
+                    key.getPrice(),
+                    key.getName(),
+                    key.getId()
+            ));
         }
-        menuAdapter.setData(menuListSoft);
+    }
+
+    private void removeOrderDetail() {
+        oderController.removeOrderDetailByIdOrder(Integer.parseInt(String.valueOf(idOrder)));
     }
 }

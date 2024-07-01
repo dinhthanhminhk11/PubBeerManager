@@ -1,21 +1,35 @@
 package com.main.pubmanagement.model;
 
-public class Menu {
+import java.io.Serializable;
+
+public class Menu implements Serializable {
     private int id;
     private String name;
     private int price;
     private int unit;
     private int idMenuType;
+    private int discount;
 
     public Menu() {
     }
 
-    public Menu(int id, String name, int price, int unit, int idMenuType) {
+
+
+    public Menu(int id, String name, int price, int unit, int idMenuType, int discount) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.unit = unit;
         this.idMenuType = idMenuType;
+        this.discount = discount;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 
     //*
