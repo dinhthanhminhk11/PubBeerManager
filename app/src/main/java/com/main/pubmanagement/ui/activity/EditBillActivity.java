@@ -3,9 +3,12 @@ package com.main.pubmanagement.ui.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import com.main.pubmanagement.R;
@@ -37,7 +40,8 @@ public class EditBillActivity extends AppCompatActivity {
     private List<OrderDetails> listOrderDetails;
     private Table table;
     private OrderDetailAdapter orderDetailAdapter;
-    private double sumNoTax;
+    private boolean isLayoutVisible = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +95,7 @@ public class EditBillActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditBillActivity.this, AddMenuActivity.class);
                 intent.putExtra(AppConstant.COLUMN_ORDER_DETAIL_NAME, (Serializable) listOrderDetails);
-                intent.putExtra(AppConstant.COLUMN_ORDER_ID , idOrder);
+                intent.putExtra(AppConstant.COLUMN_ORDER_ID, idOrder);
                 startActivityForResult(intent, REQUEST_CODE_ADD_MENU);
             }
         });
@@ -101,8 +105,49 @@ public class EditBillActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditBillActivity.this, PayActivity.class);
                 intent.putExtra(AppConstant.COLUMN_ORDER_DETAIL_NAME, (Serializable) listOrderDetails);
-                intent.putExtra("countperson" , order.getPerson());
+                intent.putExtra("countperson", order.getPerson());
+                intent.putExtra(AppConstant.COLUMN_ORDER_ID, order.getId());
+                intent.putExtra(AppConstant.COLUMN_RESTAURANT_ID, order.getIdTable());
                 startActivity(intent);
+            }
+        });
+        binding.sumPerson.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    int inputValue = Integer.parseInt(s.toString());
+                    if (inputValue > 0 && inputValue < 15) {
+                        binding.sumit.setEnabled(true);
+                        binding.sumit.setAlpha(1);
+                        oderController.updateOrderPerson(Integer.parseInt(String.valueOf(idOrder)), inputValue);
+                    } else {
+                        binding.sumit.setEnabled(false);
+                        binding.sumit.setAlpha(0.4f);
+                    }
+                } catch (NumberFormatException e) {
+                    binding.sumit.setEnabled(false);
+                    binding.sumit.setAlpha(0.4f);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        binding.listProduct.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && isLayoutVisible) {
+                    hideLayout();
+                } else if (dy < 0 && !isLayoutVisible) {
+                    showLayout();
+                }
             }
         });
     }
@@ -135,7 +180,6 @@ public class EditBillActivity extends AppCompatActivity {
     }
 
     private void updateUI(double sum) {
-        sumNoTax = sum;
         binding.countCard.setText("Thực đơn (" + listOrderDetails.size() + " món)");
         binding.countCardPrice.setText(decimalFormat.format(sum) + " ₫");
         binding.sumPerson.setText(order.getPerson() + "");
@@ -162,5 +206,36 @@ public class EditBillActivity extends AppCompatActivity {
             double newSum = calculateSum(listOrderDetails);
             updateUI(newSum);
         }
+    }
+
+    private void hideLayout() {
+        binding.layoutAddBill.animate()
+                .translationY(binding.layoutAddBill.getHeight())
+                .alpha(0.0f)
+                .setDuration(300)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.layoutAddBill.setVisibility(View.GONE);
+                        binding.addMenu.setVisibility(View.GONE);
+                        isLayoutVisible = false;
+                    }
+                });
+    }
+
+    private void showLayout() {
+        binding.layoutAddBill.setVisibility(View.VISIBLE);
+        binding.addMenu.setVisibility(View.VISIBLE);
+        binding.layoutAddBill.setAlpha(0.0f);
+        binding.layoutAddBill.animate()
+                .translationY(0)
+                .alpha(1.0f)
+                .setDuration(300)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        isLayoutVisible = true;
+                    }
+                });
     }
 }

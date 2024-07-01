@@ -369,7 +369,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
         sql1 = "CREATE TABLE " + AppConstant.TABLE_BILL + "("
                 + AppConstant.COLUMN_BILL_ID + " INTEGER PRIMARY KEY ,"
-                + AppConstant.COLUMN_BILL_TYPE + " INTEGER ,"
+                + AppConstant.COLUMN_BILL_TYPE + " INTEGER NOT NULL,"
                 + AppConstant.COLUMN_USER_ID + " INTEGER REFERENCES " + AppConstant.TABLE_USER + "( " + AppConstant.COLUMN_USER_ID + "),"
                 + AppConstant.COLUMN_BILL_PRICE + " INTEGER NOT NULL ,"
                 + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + " INTEGER NOT NULL ,"

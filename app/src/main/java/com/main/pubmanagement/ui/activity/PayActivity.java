@@ -4,15 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import com.main.pubmanagement.MainActivity;
 import com.main.pubmanagement.R;
 import com.main.pubmanagement.constant.AppConstant;
 import com.main.pubmanagement.controller.BillController;
+import com.main.pubmanagement.controller.OderController;
 import com.main.pubmanagement.databinding.ActivityAddBillBinding;
 import com.main.pubmanagement.databinding.ActivityPayBinding;
 import com.main.pubmanagement.model.Bill;
+import com.main.pubmanagement.model.BillInfo;
 import com.main.pubmanagement.model.OrderDetails;
 import com.main.pubmanagement.model.Payment;
 import com.main.pubmanagement.sharedpreferences.MySharedPreferences;
@@ -32,6 +37,9 @@ public class PayActivity extends AppCompatActivity {
     private int payment = 0;
     private BillController billController;
     private int sumPrice;
+    private OderController oderController;
+    private int idOrder;
+    private int idTable;
 
     @SuppressLint("NewApi")
     @Override
@@ -43,7 +51,10 @@ public class PayActivity extends AppCompatActivity {
 
         listOrderDetails = (List<OrderDetails>) getIntent().getSerializableExtra(AppConstant.COLUMN_ORDER_DETAIL_NAME);
         countPerson = getIntent().getIntExtra("countperson", -1);
+        idOrder = getIntent().getIntExtra(AppConstant.COLUMN_ORDER_ID, -1);
+        idTable = getIntent().getIntExtra(AppConstant.COLUMN_RESTAURANT_ID, -1);
         billController = new BillController(this);
+        oderController = new OderController(this);
         listPayment = new ArrayList<>();
         listPayment.add(new Payment(1, "Thanh toán tiền mặt"));
         listPayment.add(new Payment(2, "Chuyển khoản"));
@@ -68,16 +79,32 @@ public class PayActivity extends AppCompatActivity {
         sumPrice = sum + sumTax;
         binding.tax.setText(decimalFormat.format(sumTax) + " ₫");
         binding.sumPrice.setText(decimalFormat.format(sumPrice) + " ₫");
-
+        binding.countPerson.setText(countPerson + " khách");
 
         binding.sumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long currentTimeMillis = Instant.now().toEpochMilli();
-                billController.createBill(new Bill(
-                        0, payment, MySharedPreferences.getInstance(PayActivity.this).getInt(AppConstant.COLUMN_USER_ID, 0), sumTotal(), getTotalDiscountedPrice()
+                long result = billController.createBill(new Bill(
+                        0, payment, MySharedPreferences.getInstance(PayActivity.this).getInt(AppConstant.COLUMN_USER_ID, 0), sumPrice, getTotalDiscountedPrice()
                         , String.valueOf(currentTimeMillis), countPerson
                 ));
+                if (result > 0) {
+                    for (OrderDetails o : listOrderDetails
+                    ) {
+                        billController.createBillInfo(new BillInfo(0
+                                , Integer.parseInt(String.valueOf(result)), o.getIdMenu(), o.getQuantity(), o.getDiscount()
+                        ));
+                    }
+                    removeOrderDetail();
+                    Toast.makeText(PayActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PayActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(PayActivity.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -116,5 +143,11 @@ public class PayActivity extends AppCompatActivity {
             totalDiscountedPrice += discountedPrice * order.getQuantity();
         }
         return totalDiscountedPrice;
+    }
+
+    private void removeOrderDetail() {
+        oderController.removeOrderDetailByIdOrder(Integer.parseInt(String.valueOf(idOrder)));
+        oderController.removeOrderById(idOrder);
+        oderController.updateStatusTable(idTable);
     }
 }

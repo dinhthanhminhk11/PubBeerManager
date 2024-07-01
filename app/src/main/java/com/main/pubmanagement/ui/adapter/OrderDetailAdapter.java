@@ -61,10 +61,10 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             }
             holder.itemMenuBinding.price.setText(decimalFormat.format(item.getPrice()) + "₫");
             holder.itemMenuBinding.count.setVisibility(View.VISIBLE);
-            holder.itemMenuBinding.up.setVisibility(View.VISIBLE);
-            holder.itemMenuBinding.down.setVisibility(View.VISIBLE);
+            holder.itemMenuBinding.up.setVisibility(View.GONE);
+            holder.itemMenuBinding.down.setVisibility(View.GONE);
 
-            holder.itemMenuBinding.count.setText(String.valueOf(item.getQuantity()));
+            holder.itemMenuBinding.count.setText("Số lượng " + item.getQuantity());
 
             holder.itemMenuBinding.up.setOnClickListener(new View.OnClickListener() {
                 @Override

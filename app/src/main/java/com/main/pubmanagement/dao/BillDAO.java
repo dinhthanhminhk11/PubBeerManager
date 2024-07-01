@@ -1,7 +1,9 @@
 package com.main.pubmanagement.dao;
 
 import com.main.pubmanagement.model.Bill;
+import com.main.pubmanagement.model.BillInfo;
 
 public interface BillDAO {
-    boolean createBill(Bill bill);
+    long createBill(Bill bill);
+    long createBillInfo(BillInfo bill);
 }

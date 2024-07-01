@@ -1,9 +1,5 @@
 package com.main.pubmanagement.ui.activity;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,13 +8,17 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.main.pubmanagement.R;
 import com.main.pubmanagement.constant.AppConstant;
 import com.main.pubmanagement.controller.MenuController;
 import com.main.pubmanagement.controller.MenuTypeController;
 import com.main.pubmanagement.controller.OderController;
 import com.main.pubmanagement.databinding.ActivityAddBillBinding;
-import com.main.pubmanagement.databinding.ActivityLoginBinding;
 import com.main.pubmanagement.model.Menu;
 import com.main.pubmanagement.model.Order;
 import com.main.pubmanagement.model.OrderDetails;
@@ -40,6 +40,7 @@ public class AddBillActivity extends AppCompatActivity {
     private ActivityAddBillBinding binding;
     private Table table;
     private StoreyAdapter storeyAdapter;
+    private boolean isLayoutVisible = true;
     private MenuTypeController menuTypeController;
     private MenuController menuController;
     private MenuAdapter menuAdapter;
@@ -175,6 +176,18 @@ public class AddBillActivity extends AppCompatActivity {
             }
         });
 
+        binding.listProduct.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && isLayoutVisible) {
+                    hideLayout();
+                } else if (dy < 0 && !isLayoutVisible) {
+                    showLayout();
+                }
+            }
+        });
+
     }
 
     private void loadData(int position) {
@@ -217,5 +230,34 @@ public class AddBillActivity extends AppCompatActivity {
             }
         }
         menuAdapter.setData(menuListSoft);
+    }
+
+    private void hideLayout() {
+        binding.layoutAddBill.animate()
+                .translationY(binding.layoutAddBill.getHeight())
+                .alpha(0.0f)
+                .setDuration(300)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.layoutAddBill.setVisibility(View.GONE);
+                        isLayoutVisible = false;
+                    }
+                });
+    }
+
+    private void showLayout() {
+        binding.layoutAddBill.setVisibility(View.VISIBLE);
+        binding.layoutAddBill.setAlpha(0.0f);
+        binding.layoutAddBill.animate()
+                .translationY(0)
+                .alpha(1.0f)
+                .setDuration(300)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        isLayoutVisible = true;
+                    }
+                });
     }
 }

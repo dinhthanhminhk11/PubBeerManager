@@ -50,6 +50,8 @@ public class OderController implements OrderDAO {
         }
     }
 
+
+
     @Override
     public boolean createOrderDetail(OrderDetails order) {
         this.sqLiteDatabase = mySqlHelper.getWritableDatabase();
@@ -84,6 +86,14 @@ public class OderController implements OrderDAO {
         cursor.close();
         sqLiteDatabase.close();
         return order;
+    }
+
+    public void updateOrderPerson(int orderId, int newPersonCount) {
+        SQLiteDatabase db = mySqlHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(AppConstant.COLUMN_ORDER_PERSON, newPersonCount);
+        db.update(AppConstant.TABLE_ORDER, values, AppConstant.COLUMN_ORDER_ID + " = ?", new String[]{String.valueOf(orderId)});
+        db.close();
     }
 
     @SuppressLint("Range")
@@ -143,5 +153,22 @@ public class OderController implements OrderDAO {
         SQLiteDatabase db = mySqlHelper.getWritableDatabase();
         db.delete(AppConstant.TABLE_ORDER_DETAIL, AppConstant.COLUMN_ORDER_ID + " = ?", new String[]{String.valueOf(orderId)});
         db.close();
+    }
+
+    @Override
+    public void removeOrderById(int orderId) {
+        SQLiteDatabase db = mySqlHelper.getWritableDatabase();
+        db.delete(AppConstant.TABLE_ORDER, AppConstant.COLUMN_ORDER_ID + " = ?", new String[]{String.valueOf(orderId)});
+        db.close();
+    }
+
+    @Override
+    public void updateStatusTable(int i) {
+        this.sqLiteDatabase = mySqlHelper.getWritableDatabase();
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(AppConstant.COLUMN_RESTAURANT_STATUS, 0);
+        String whereClause = AppConstant.COLUMN_RESTAURANT_ID + " = ?";
+        String[] whereArgs = {String.valueOf(i)};
+        this.sqLiteDatabase.update(AppConstant.TABLE_TABLE_RESTAURANT, updateValues, whereClause, whereArgs);
     }
 }

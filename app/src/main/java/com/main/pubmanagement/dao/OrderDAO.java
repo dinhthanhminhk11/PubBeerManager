@@ -18,4 +18,7 @@ public interface OrderDAO {
     Table getTableById(long id);
 
     void removeOrderDetailByIdOrder(int orderId);
+    void removeOrderById(int orderId);
+
+    void updateStatusTable(int i);
 }
