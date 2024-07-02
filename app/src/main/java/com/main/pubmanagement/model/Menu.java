@@ -40,6 +40,17 @@ public class Menu implements Serializable {
         this.count = count;
     }
 
+    public Menu(int id, String name, int price, int unit, int idMenuType, int discount, String content, int count) {
+        this.name = name;
+        this.price = price;
+        this.unit = unit;
+        this.idMenuType = idMenuType;
+        this.discount = discount;
+        this.content = content;
+        this.count = count;
+        this.id = id;
+    }
+
     public Menu() {
     }
 

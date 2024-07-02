@@ -1,5 +1,6 @@
 package com.main.pubmanagement.ui.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -7,19 +8,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.main.pubmanagement.MainActivity;
 import com.main.pubmanagement.R;
 import com.main.pubmanagement.constant.AppConstant;
 import com.main.pubmanagement.controller.MenuTypeController;
-import com.main.pubmanagement.databinding.ActivityAddNewMenuBinding;
-import com.main.pubmanagement.model.Menu;
-import com.main.pubmanagement.model.MenuType;
+import com.main.pubmanagement.databinding.ActivityEditMenuBinding;
 import com.main.pubmanagement.model.Storey;
+import com.main.pubmanagement.sharedpreferences.MySharedPreferences;
 import com.main.pubmanagement.ui.customview.spinner.NiceSpinner;
 import com.main.pubmanagement.ui.customview.spinner.OnSpinnerItemSelectedListener;
+import com.main.pubmanagement.ui.view.dialog.DialogConfirmCustom;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -27,18 +31,22 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AddNewMenuActivity extends AppCompatActivity {
-    private ActivityAddNewMenuBinding binding;
+public class EditMenuActivity extends AppCompatActivity {
+    private DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    private MenuItem menuItem;
+    private ActivityEditMenuBinding binding;
     private MenuTypeController menuTypeController;
     private String nameUnit = "Tháp";
     private int idMenuType = 1;
+    private com.main.pubmanagement.model.Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddNewMenuBinding.inflate(getLayoutInflater());
+        binding = ActivityEditMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initToolbar();
+        menu = (com.main.pubmanagement.model.Menu) getIntent().getSerializableExtra(AppConstant.TABLE_MENU);
         menuTypeController = new MenuTypeController(this);
 
         List<Storey> list = menuTypeController.getListMenuTypeNoAll();
@@ -71,11 +79,23 @@ public class AddNewMenuActivity extends AppCompatActivity {
                 nameUnit = (String) parent.getItemAtPosition(position);
             }
         });
+        binding.listUnit.setSelectedIndex(menu.getUnit());
+        binding.listCategory.setSelectedIndex(menu.getIdMenuType() - 1);
 
+        binding.price.addTextChangedListener(new NumberTextWatcher(binding.price));
+
+        binding.name.setText(menu.getName());
+        binding.price.setText(decimalFormat.format(menu.getPrice()));
+        binding.priceDiscount.setText(menu.getDiscount() + "");
+        binding.content.setText(menu.getContent());
+        binding.count.setText(menu.getCount() + "");
+
+        binding.sumit.setText("Lưu");
         binding.sumit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (menuTypeController.createMenu(new Menu(
+            public void onClick(View view) {
+                if (menuTypeController.editMenu(new com.main.pubmanagement.model.Menu(
+                        menu.getId(),
                         binding.name.getText().toString(),
                         Integer.parseInt(binding.price.getText().toString().replaceAll(AppConstant.DOT, "")),
                         convertUnitToNumber(nameUnit),
@@ -84,23 +104,21 @@ public class AddNewMenuActivity extends AppCompatActivity {
                         binding.content.getText().toString().equals("") ? null : binding.content.getText().toString(),
                         Integer.parseInt(binding.count.getText().toString())
                 )) > 0) {
-                    Toast.makeText(AddNewMenuActivity.this, "Thêm món thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditMenuActivity.this, "Sửa thành công", Toast.LENGTH_SHORT).show();
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("Another_Result_Key", "add_success");
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 } else {
-                    Toast.makeText(AddNewMenuActivity.this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditMenuActivity.this, "Sửa thất bại", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-        binding.price.addTextChangedListener(new NumberTextWatcher(binding.price));
-
     }
 
     private void initToolbar() {
-        binding.toolBar.setTitle("Thêm món ăn");
+        setSupportActionBar(binding.toolBar);
+        getSupportActionBar().setTitle("Chỉnh sửa món ăn");
         binding.toolBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24);
         binding.toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +152,41 @@ public class AddNewMenuActivity extends AppCompatActivity {
         } else {
             throw new IllegalArgumentException("Unknown unit: " + unit);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.itemdelete, menu);
+        menuItem = menu.findItem(R.id.iconDelete);
+        menuItem.setIcon(R.drawable.baseline_delete_24);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.iconDelete) {
+            showDialogLogOut();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialogLogOut() {
+        DialogConfirmCustom dialog = DialogConfirmCustom.create(
+                this,
+                "Bạn có chắc chắn muốn xóa món ăn này",
+                "Đồng ý", "Hủy",
+                () -> {
+                    menuTypeController.deleteMenuById(menu.getId());
+                    Toast.makeText(this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("Another_Result_Key", "add_success");
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }
+        );
+        dialog.show();
     }
 
     class NumberTextWatcher implements TextWatcher {

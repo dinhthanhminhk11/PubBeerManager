@@ -50,7 +50,7 @@ public class MenuTypeController implements MenuTypeDAO {
         contentValues.put(AppConstant.COLUMN_MENU_UNIT, menu.getUnit());
         contentValues.put(AppConstant.COLUMN_MENU_TYPE_ID, menu.getIdMenuType());
         contentValues.put(AppConstant.COLUMN_MENU_DISCOUNT, menu.getDiscount());
-        if(menu.getContent() !=null){
+        if (menu.getContent() != null) {
             contentValues.put(AppConstant.COLUMN_MENU_CONTENT, menu.getContent());
         }
         contentValues.put(AppConstant.COLUMN_MENU_COUNT, menu.getCount());
@@ -94,5 +94,25 @@ public class MenuTypeController implements MenuTypeDAO {
         cursor.close();
         this.sqLiteDatabase.close();
         return list;
+    }
+
+    public void deleteMenuById(int id) {
+        SQLiteDatabase db = mySqlHelper.getWritableDatabase();
+        db.delete(AppConstant.TABLE_MENU, AppConstant.COLUMN_MENU_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public long editMenu(Menu menu) {
+        sqLiteDatabase = mySqlHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(AppConstant.COLUMN_MENU_NAME, menu.getName());
+        values.put(AppConstant.COLUMN_MENU_PRICE, menu.getPrice());
+        values.put(AppConstant.COLUMN_MENU_UNIT, menu.getUnit());
+        values.put(AppConstant.COLUMN_MENU_TYPE_ID, menu.getIdMenuType());
+        values.put(AppConstant.COLUMN_MENU_DISCOUNT, menu.getDiscount());
+        values.put(AppConstant.COLUMN_MENU_CONTENT, menu.getContent());
+        values.put(AppConstant.COLUMN_MENU_COUNT, menu.getCount());
+        long result = sqLiteDatabase.update(AppConstant.TABLE_MENU, values, AppConstant.COLUMN_MENU_ID + " = ?", new String[]{String.valueOf(menu.getId())});
+        return result == -1 ? -1 : result;
     }
 }

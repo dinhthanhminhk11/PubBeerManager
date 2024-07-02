@@ -9,10 +9,20 @@ public class Bill implements Serializable {
     private int idTable;
     private int price;
     private int priceDiscount;
-    private String time;
+    private long time;
     private int countPerson;
     private String nameTable;
     private String storeyName;
+    private String nameUser;
+
+    public String getNameUser() {
+        return nameUser;
+    }
+
+    public void setNameUser(String nameUser) {
+        this.nameUser = nameUser;
+    }
+
     public String getNameTable() {
         return nameTable;
     }
@@ -24,7 +34,7 @@ public class Bill implements Serializable {
     public Bill() {
     }
 
-    public Bill(int id, int type, int idUser, int idTable,int price, int priceDiscount, String time,int countPerson) {
+    public Bill(int id, int type, int idUser, int idTable,int price, int priceDiscount, long time,int countPerson) {
         this.id = id;
         this.type = type;
         this.idUser = idUser;
@@ -91,11 +101,11 @@ public class Bill implements Serializable {
         this.priceDiscount = priceDiscount;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

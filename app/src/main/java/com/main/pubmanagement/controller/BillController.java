@@ -75,7 +75,7 @@ public class BillController implements BillDAO {
                 bill.setType(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_TYPE)));
                 bill.setPrice(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_PRICE)));
                 bill.setPriceDiscount(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_PRICE_DISCOUNT)));
-                bill.setTime(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_BILL_TIME)));
+                bill.setTime(cursor.getLong(cursor.getColumnIndex(AppConstant.COLUMN_BILL_TIME)));
                 bill.setCountPerson(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_COUNT_PERSON)));
                 bill.setNameTable(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_RESTAURANT_NAME)));
                 bill.setStoreyName(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_STOREY_NAME)));
@@ -88,6 +88,51 @@ public class BillController implements BillDAO {
 
         return billList;
     }
+
+    @SuppressLint("Range")
+    public List<Bill> getListBill(long startDate, long endDate) {
+        List<Bill> billList = new ArrayList<>();
+        SQLiteDatabase db = mySqlHelper.getReadableDatabase();
+
+        String query = "SELECT b." + AppConstant.COLUMN_BILL_ID + ", b." + AppConstant.COLUMN_BILL_TYPE + ", " +
+                "b." + AppConstant.COLUMN_BILL_PRICE + ", b." + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + ", " +
+                "b." + AppConstant.COLUMN_BILL_TIME + ", b." + AppConstant.COLUMN_BILL_COUNT_PERSON + ", " +
+                "r." + AppConstant.COLUMN_RESTAURANT_NAME + ", s." + AppConstant.COLUMN_STOREY_NAME + ", " +
+                "u." + AppConstant.COLUMN_USER_NAME +
+                " FROM " + AppConstant.TABLE_BILL + " b" +
+                " JOIN " + AppConstant.TABLE_TABLE_RESTAURANT + " r ON b." + AppConstant.COLUMN_RESTAURANT_ID + " = r." + AppConstant.COLUMN_RESTAURANT_ID +
+                " JOIN " + AppConstant.TABLE_STOREY + " s ON r." + AppConstant.COLUMN_STOREY_ID + " = s." + AppConstant.COLUMN_STOREY_ID +
+                " JOIN " + AppConstant.TABLE_USER + " u ON b." + AppConstant.COLUMN_USER_ID + " = u." + AppConstant.COLUMN_USER_ID +
+                " WHERE b." + AppConstant.COLUMN_BILL_TIME + " BETWEEN ? AND ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(startDate), String.valueOf(endDate)});
+
+        Log.d("SQLQuery", "Query: " + query);
+        Log.d("SQLQuery", "Start Date: " + startDate + ", End Date: " + endDate);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Bill bill = new Bill();
+                bill.setId(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_ID)));
+                bill.setType(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_TYPE)));
+                bill.setPrice(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_PRICE)));
+                bill.setPriceDiscount(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_PRICE_DISCOUNT)));
+                bill.setTime(cursor.getLong(cursor.getColumnIndex(AppConstant.COLUMN_BILL_TIME)));
+                bill.setCountPerson(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_COUNT_PERSON)));
+                bill.setNameTable(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_RESTAURANT_NAME)));
+                bill.setStoreyName(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_STOREY_NAME)));
+                bill.setNameUser(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_USER_NAME)));
+                Log.d("BillData", "Bill ID: " + bill.getId() + ", Bill Time: " + bill.getTime());
+                billList.add(bill);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return billList;
+    }
+
 
     @SuppressLint("Range")
     public List<BillInfo> getBillInfoByBillId(int billId) {
@@ -255,6 +300,18 @@ public class BillController implements BillDAO {
 
     public int getTotalCombinedBillsByUserId(int userId) {
         return getTotalBillsByTypeAndUserId(userId, 3);
+    }
+
+    public void deleteBillById(int id) {
+        SQLiteDatabase db = mySqlHelper.getWritableDatabase();
+        db.delete(AppConstant.TABLE_BILL, AppConstant.COLUMN_BILL_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public void removeBillDetailByIdOrder(int billDetail) {
+        SQLiteDatabase db = mySqlHelper.getWritableDatabase();
+        db.delete(AppConstant.TABLE_BILL_INFO, AppConstant.COLUMN_BILL_ID + " = ?", new String[]{String.valueOf(billDetail)});
+        db.close();
     }
 
 }

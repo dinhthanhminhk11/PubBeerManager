@@ -3,29 +3,24 @@ package com.main.pubmanagement.ui.fragment.manager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.main.pubmanagement.R;
 import com.main.pubmanagement.base.BaseFragment;
 import com.main.pubmanagement.constant.AppConstant;
 import com.main.pubmanagement.controller.MenuController;
 import com.main.pubmanagement.databinding.FragmentProductBinding;
 import com.main.pubmanagement.model.Menu;
 import com.main.pubmanagement.model.MenuType;
-import com.main.pubmanagement.model.Table;
-import com.main.pubmanagement.ui.activity.AddCategoryActivity;
 import com.main.pubmanagement.ui.activity.AddNewMenuActivity;
+import com.main.pubmanagement.ui.activity.EditMenuActivity;
 import com.main.pubmanagement.ui.activity.ManagerCategoryActivity;
 import com.main.pubmanagement.ui.adapter.ProductAdapter;
 
@@ -40,6 +35,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> {
     private ActivityResultLauncher<Intent> resultLauncher;
     private ActivityResultLauncher<Intent> anotherResultLauncher;
     private MenuType resultData;
+
     @Override
     protected FragmentProductBinding inflateBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
         return FragmentProductBinding.inflate(inflater, container, false);
@@ -54,7 +50,6 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> {
         menuList = new ArrayList<>();
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(productAdapter);
-        menuList = menuController.getListMenu();
         iniDataListAll();
         resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -82,10 +77,14 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> {
                         if (data != null) {
                             String resultData = data.getStringExtra("Another_Result_Key");
                             if (resultData.equals("add_success")) {///
-                                if (ProductFragment.this.resultData.getId() == 0) {
-                                    reloadAll();
+                                if (ProductFragment.this.resultData != null) {
+                                    if (ProductFragment.this.resultData.getId() == 0) {
+                                        reloadAll();
+                                    } else {
+                                        reload(ProductFragment.this.resultData.getId());
+                                    }
                                 } else {
-                                    reload(ProductFragment.this.resultData.getId());
+                                    reloadAll();
                                 }
                             }
                         }
@@ -110,6 +109,14 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> {
                 anotherResultLauncher.launch(new Intent(getActivity(), AddNewMenuActivity.class));
             }
         });
+        productAdapter.setCallback(new ProductAdapter.Callback() {
+            @Override
+            public void click(Menu menu) {
+                Intent intent = new Intent(getActivity(), EditMenuActivity.class);
+                intent.putExtra(AppConstant.TABLE_MENU, menu);
+                anotherResultLauncher.launch(intent);
+            }
+        });
     }
 
     @Override
@@ -119,11 +126,12 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> {
     }
 
     private void iniDataListAll() {
+        menuList = menuController.getListMenu();
         productAdapter.setData(menuList);
         binding.count.setText(menuList.size() + " món");
     }
 
-    public void reloadAll(){
+    public void reloadAll() {
         menuList = menuController.getListMenu();
         productAdapter.setData(menuList);
         binding.count.setText(menuList.size() + " món");

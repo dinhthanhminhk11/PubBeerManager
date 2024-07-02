@@ -30,6 +30,7 @@ public class HistoryBillAdapter extends RecyclerView.Adapter<HistoryBillAdapter.
 
     public void setData(List<Bill> data) {
         this.data = data;
+        notifyDataSetChanged();
     }
 
     private NumberFormat fm = new DecimalFormat("#,###");
@@ -45,7 +46,7 @@ public class HistoryBillAdapter extends RecyclerView.Adapter<HistoryBillAdapter.
     public void onBindViewHolder(@NonNull HistoryBillAdapter.ViewHolder holder, int position) {
         Bill bill = data.get(position);
         if (bill != null) {
-            LocalDateTime currentDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(bill.getTime())), ZoneId.systemDefault());
+            LocalDateTime currentDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(bill.getTime()), ZoneId.systemDefault());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedDateTime = currentDateTime.format(formatter);
             holder.binding.title.setText("Bàn : " + bill.getNameTable() + " " + bill.getStoreyName());

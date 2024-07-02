@@ -7,9 +7,9 @@
     <string name="srn_ex_bad_content_view">Your content view must contain exactly one child. Make sure you call inject() after setContentView().</string>
 
     <string name="home_manager">Tổng quan</string>
-    <string name="product_manager">Hàng hóa</string>
+    <string name="product_manager">Món Ăn</string>
     <string name="bill_manager">Hóa đơn</string>
-    <string name="fund_number_manager">Số quý</string>
+    <string name="fund_number_manager">Nhân sự</string>
     <string name="setting">Cài đặt</string>
     <string name="logout">Đăng xuất</string>
     <string name="table_staff">Phòng bàn</string>

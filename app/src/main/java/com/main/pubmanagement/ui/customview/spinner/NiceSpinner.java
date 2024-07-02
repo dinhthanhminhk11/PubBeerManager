@@ -308,7 +308,11 @@ public class NiceSpinner extends AppCompatTextView {
             if (position >= 0 && position <= adapter.getCount()) {
                 adapter.setSelectedIndex(position);
                 selectedIndex = position;
-                setTextInternal(selectedTextFormatter.format(adapter.getItemInDataset(position)).toString());
+                if(adapter.getItemInDataset(position) instanceof Storey){
+                    setTextInternal(selectedTextFormatter.format(((Storey) adapter.getItemInDataset(position)).getName()));
+                }else {
+                    setTextInternal(selectedTextFormatter.format(adapter.getItemInDataset(position)).toString());
+                }
             } else {
                 throw new IllegalArgumentException("Position must be lower than adapter count!");
             }

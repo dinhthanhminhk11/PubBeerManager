@@ -3,10 +3,13 @@ package com.main.pubmanagement.ui.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import com.main.pubmanagement.MainActivity;
 import com.main.pubmanagement.R;
 import com.main.pubmanagement.constant.AppConstant;
 import com.main.pubmanagement.controller.BillController;
@@ -14,6 +17,8 @@ import com.main.pubmanagement.databinding.ActivityAddBillBinding;
 import com.main.pubmanagement.databinding.ActivityInfoBillBinding;
 import com.main.pubmanagement.model.Bill;
 import com.main.pubmanagement.model.BillInfo;
+import com.main.pubmanagement.sharedpreferences.MySharedPreferences;
+import com.main.pubmanagement.ui.view.dialog.DialogConfirmCustom;
 
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -42,7 +47,7 @@ public class InfoBillActivity extends AppCompatActivity {
         billInfos = billController.getBillInfoByBillId(bill.getId());
         initToolbar();
 
-        LocalDateTime currentDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(bill.getTime())), ZoneId.systemDefault());
+        LocalDateTime currentDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(bill.getTime()), ZoneId.systemDefault());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = currentDateTime.format(formatter);
 
@@ -61,6 +66,33 @@ public class InfoBillActivity extends AppCompatActivity {
 
         binding.priceAndCount.setText(sbTitle.toString());
 
+        binding.sumit.setVisibility(MySharedPreferences.getInstance(this).getInt(AppConstant.COLUMN_USER_ROLE, 0) == 0 ? View.VISIBLE : View.GONE);
+        binding.contentUserCreate.setVisibility(MySharedPreferences.getInstance(this).getInt(AppConstant.COLUMN_USER_ROLE, 0) == 0 ? View.VISIBLE : View.GONE);
+
+        if (binding.contentUserCreate.getVisibility() == View.VISIBLE) {
+            binding.namePerson.setText(bill.getNameUser());
+        }
+
+        binding.sumit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogConfirmCustom dialog = DialogConfirmCustom.create(
+                        InfoBillActivity.this,
+                        "Bạn có muốn xóa hóa đơn này không",
+                        "Đồng ý", "Hủy",
+                        () -> {
+                            for (BillInfo billInfo : billInfos) {
+                                billController.removeBillDetailByIdOrder(billInfo.getIdBill());
+                            }
+                            billController.deleteBillById(bill.getId());
+                            Toast.makeText(InfoBillActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                );
+                dialog.show();
+
+            }
+        });
     }
 
     private void initToolbar() {

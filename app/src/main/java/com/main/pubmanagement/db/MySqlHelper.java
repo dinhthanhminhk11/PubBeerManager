@@ -14,12 +14,22 @@ public class MySqlHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String sql1 = "CREATE TABLE " + AppConstant.TABLE_USER + "(" + AppConstant.COLUMN_USER_ID + " INTEGER PRIMARY KEY , " + AppConstant.COLUMN_USER_NAME + " TEXT NOT NULL, " + AppConstant.COLUMN_USER_USERNAME + " TEXT NOT NULL, " + AppConstant.COLUMN_USER_PASSWORD + " TEXT NOT NULL, " + AppConstant.COLUMN_USER_ROLE + " INTEGER NOT NULL, " + AppConstant.COLUMN_USER_SHIFT + " INTEGER NOT NULL" + ")";
+        String sql1 = "CREATE TABLE " + AppConstant.TABLE_USER + "(" +
+                AppConstant.COLUMN_USER_ID + " INTEGER PRIMARY KEY , " +
+                AppConstant.COLUMN_USER_NAME + " TEXT NOT NULL, " +
+                AppConstant.COLUMN_USER_PHONE + " TEXT NOT NULL, " +
+                AppConstant.COLUMN_USER_CCCD + " TEXT NOT NULL, " +
+                AppConstant.COLUMN_USER_USERNAME + " TEXT NOT NULL, " +
+                AppConstant.COLUMN_USER_PASSWORD + " TEXT NOT NULL, " +
+                AppConstant.COLUMN_USER_ROLE + " INTEGER NOT NULL, " +
+                AppConstant.COLUMN_USER_SHIFT + " INTEGER NOT NULL," +
+                AppConstant.COLUMN_USER_SALARY + " INTEGER NOT NULL" +
+                ")";
         sqLiteDatabase.execSQL(sql1);
 
-        sql1 = "INSERT INTO " + AppConstant.TABLE_USER + " VALUES ( null ,'Đinh Thanh Minh','dinhthanhminh' ,'123456' , 0 , 0)";
+        sql1 = "INSERT INTO " + AppConstant.TABLE_USER + " VALUES ( null ,'Đinh Thanh Minh', '0375684487','040505998765' , 'dinhthanhminh' ,'123456' , 0 , 0 , 1200000)";
         sqLiteDatabase.execSQL(sql1);
-        sql1 = "INSERT INTO " + AppConstant.TABLE_USER + " VALUES ( null ,'Đinh Thanh Minh Nhan Vien','staffdinhminh' ,'123456' , 1 , 1)";
+        sql1 = "INSERT INTO " + AppConstant.TABLE_USER + " VALUES ( null ,'Đinh Thanh Minh Nhan Vien', '0375684487','040505998765' ,'staffdinhminh' ,'123456' , 1 , 1, 1200000)";
         sqLiteDatabase.execSQL(sql1);
 
         sql1 = "CREATE TABLE " + AppConstant.TABLE_STOREY + "(" + AppConstant.COLUMN_STOREY_ID + " INTEGER PRIMARY KEY , " + AppConstant.COLUMN_STOREY_NAME + " TEXT NOT NULL " + ")";
@@ -376,7 +386,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
                 + AppConstant.COLUMN_RESTAURANT_ID + " INTEGER REFERENCES " + AppConstant.TABLE_TABLE_RESTAURANT + "( " + AppConstant.COLUMN_RESTAURANT_ID + "),"
                 + AppConstant.COLUMN_BILL_PRICE + " INTEGER NOT NULL ,"
                 + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + " INTEGER NOT NULL ,"
-                + AppConstant.COLUMN_BILL_TIME + " TEXT NOT NULL, "
+                + AppConstant.COLUMN_BILL_TIME + " INTEGER NOT NULL, "
                 + AppConstant.COLUMN_BILL_COUNT_PERSON + " INTEGER NOT NULL"
                 + ")";
         sqLiteDatabase.execSQL(sql1);

@@ -17,6 +17,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
     private List<Menu> data;
 
+    private Callback callback;
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
     public ProductAdapter() {
     }
 
@@ -47,7 +53,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    callback.click(item);
                 }
             });
         }
@@ -91,5 +97,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 return "Lon";
         }
         return "";
+    }
+
+    public interface Callback {
+        void click(Menu menu);
     }
 }

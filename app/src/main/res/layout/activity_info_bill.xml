@@ -110,6 +110,33 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/contentUserCreate"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5dp"
+                android:text="Người tạo"
+                android:textSize="@dimen/_17sp" />
+
+            <TextView
+                android:id="@+id/namePerson"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_17sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </LinearLayout>
 
 
@@ -202,6 +229,21 @@
                 android:textSize="@dimen/_17sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/sumit"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@+id/btnAddBill"
+            android:layout_marginHorizontal="@dimen/_10dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:background="@drawable/bg_buttom_red"
+            android:text="Xóa hóa đơn"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:backgroundTint="@null" />
     </LinearLayout>
+
 
 </LinearLayout>

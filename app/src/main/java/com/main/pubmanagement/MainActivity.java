@@ -119,12 +119,12 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     break;
                 }
                 case POS_BILL_MANAGER: {
-                    binding.titleSelect.setText(R.string.home_manager);
+                    binding.titleSelect.setText("Quản lý hóa đơn");
                     showFragment(new BillFragment());
                     break;
                 }
                 case POS_FUND_NUMBER_MANAGER: {
-                    binding.titleSelect.setText(R.string.home_manager);
+                    binding.titleSelect.setText("Nhân sự");
                     showFragment(new FundNumberFragment());
                     break;
                 }

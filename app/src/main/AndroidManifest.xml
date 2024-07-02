@@ -15,6 +15,12 @@
         android:theme="@style/Theme.PubManagement"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.AddMemberActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.EditMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.AddNewMenuActivity"
             android:exported="false" />
         <activity
