@@ -1,5 +1,6 @@
 package com.main.pubmanagement.ui.adapter;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -10,8 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.main.pubmanagement.constant.AppConstant;
 import com.main.pubmanagement.databinding.ItemHistoryBillBinding;
 import com.main.pubmanagement.model.Bill;
+import com.main.pubmanagement.ui.activity.InfoBillActivity;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -45,10 +48,18 @@ public class HistoryBillAdapter extends RecyclerView.Adapter<HistoryBillAdapter.
             LocalDateTime currentDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(bill.getTime())), ZoneId.systemDefault());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedDateTime = currentDateTime.format(formatter);
-            holder.binding.title.setText(bill.getNameTable());
-            holder.binding.content.setText(bill.getCountPerson() + " khách " + bill.getType() + " ");
+            holder.binding.title.setText("Bàn : " + bill.getNameTable() + " " + bill.getStoreyName());
+            holder.binding.content.setText(bill.getCountPerson() + " khách | Thanh toán: " + convertStringType(bill.getType()));
             holder.binding.dateAndTime.setText(formattedDateTime);
-            holder.binding.price.setText("+" + fm.format(Integer.parseInt(String.valueOf(bill.getPrice()))));
+            holder.binding.price.setText(fm.format(Integer.parseInt(String.valueOf(bill.getPrice()))));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(holder.itemView.getContext(), InfoBillActivity.class);
+                    intent.putExtra(AppConstant.TABLE_BILL, bill);
+                    holder.itemView.getContext().startActivity(intent);
+                }
+            });
         }
     }
 
@@ -63,6 +74,21 @@ public class HistoryBillAdapter extends RecyclerView.Adapter<HistoryBillAdapter.
         public ViewHolder(@NonNull ItemHistoryBillBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
+        }
+    }
+
+    private String convertStringType(int type) {
+        switch (type) {
+            case 0:
+                return "Tiền mặt";
+            case 1:
+                return "Chuyển khoản";
+            case 2:
+                return "Thẻ";
+            case 3:
+                return "Kết hợp";
+            default:
+                return "";
         }
     }
 }

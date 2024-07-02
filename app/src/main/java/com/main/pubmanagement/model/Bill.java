@@ -1,6 +1,8 @@
 package com.main.pubmanagement.model;
 
-public class Bill {
+import java.io.Serializable;
+
+public class Bill implements Serializable {
     private int id;
     private int type;
     private int idUser;
@@ -10,8 +12,7 @@ public class Bill {
     private String time;
     private int countPerson;
     private String nameTable;
-
-
+    private String storeyName;
     public String getNameTable() {
         return nameTable;
     }
@@ -96,5 +97,13 @@ public class Bill {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getStoreyName() {
+        return storeyName;
+    }
+
+    public void setStoreyName(String storeyName) {
+        this.storeyName = storeyName;
     }
 }

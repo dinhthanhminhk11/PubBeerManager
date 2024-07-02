@@ -200,6 +200,7 @@ public class EditBillActivity extends AppCompatActivity {
                 orderDetail.setName(menu.getName());
                 orderDetail.setPrice(menu.getPrice());
                 orderDetail.setQuantity(quantity);
+                orderDetail.setIdMenu(menu.getId());
                 listOrderDetails.add(orderDetail);
             }
             orderDetailAdapter.setData(listOrderDetails);

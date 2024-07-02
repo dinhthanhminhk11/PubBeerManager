@@ -6,6 +6,24 @@ public class BillInfo {
     private int idMenu;
     private int quantity;
     private int discount;
+    private String nameMenu;
+    private int price;
+
+    public String getNameMenu() {
+        return nameMenu;
+    }
+
+    public void setNameMenu(String nameMenu) {
+        this.nameMenu = nameMenu;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 
     public BillInfo() {
     }

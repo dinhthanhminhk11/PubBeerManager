@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_EBEBEB"
-    tools:context=".ui.fragment.staff.ReportLatsDayFragment">
+    android:orientation="vertical"
+    tools:context=".ui.activity.InfoBillActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/gradientbackground_white"
+        app:titleTextColor="@color/black" />
 
     <LinearLayout
         android:id="@+id/contentCancellationPolicy"
@@ -21,7 +30,7 @@
             android:id="@+id/text12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tổng kết bán hàng"
+            android:text="Bàn 01 : tầng"
             android:textColor="@color/black"
             android:textSize="@dimen/_16dp"
             android:textStyle="bold" />
@@ -36,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5dp"
-                android:text="Doanh thu tổng"
+                android:text="Hình thức thanh toán"
                 android:textSize="@dimen/_17sp" />
 
             <TextView
@@ -61,32 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5dp"
-                android:text="Doanh thu giảm giá hóa đơn"
-                android:textSize="@dimen/_17sp" />
-
-            <TextView
-                android:id="@+id/countDiscountBillprice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_17sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:text="Số khách phục vụ"
+                android:text="Ngày giờ"
                 android:textSize="@dimen/_17sp" />
 
             <TextView
@@ -101,7 +85,6 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5dp"
-                android:text="Số khách đang phục vụ"
+                android:text="Số khách"
                 android:textSize="@dimen/_17sp" />
 
             <TextView
@@ -127,159 +110,98 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:text="Số hóa đơn"
-                android:textSize="@dimen/_17sp" />
-
-            <TextView
-                android:id="@+id/countBill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_17sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:text="Số hóa đơn giảm giá"
-                android:textSize="@dimen/_17sp" />
-
-            <TextView
-                android:id="@+id/countBillDiscount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_17sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:text="Chuyển khoản"
-                android:textSize="@dimen/_17sp" />
-
-            <TextView
-                android:id="@+id/countTypeBill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_17sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:text="Tiền mặt"
-                android:textSize="@dimen/_17sp" />
-
-            <TextView
-                android:id="@+id/countTypeBill2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_17sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:text="Thẻ"
-                android:textSize="@dimen/_17sp" />
-
-            <TextView
-                android:id="@+id/countTypeBill3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_17sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:text="Khác"
-                android:textSize="@dimen/_17sp" />
-
-            <TextView
-                android:id="@+id/countTypeBill4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_17sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
     </LinearLayout>
 
-</FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/contentBackground3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10dp"
+        android:background="@drawable/gradientbackground_white"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_20dp"
+        android:paddingVertical="@dimen/_10dp">
+
+        <TextView
+            android:id="@+id/text9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chi tiết giá cho"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/priceAndCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5dp"
+                android:text=""
+                android:textSize="@dimen/_17sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5dp"
+                android:text="Giảm giá"
+                android:textSize="@dimen/_17sp" />
+
+            <TextView
+                android:id="@+id/priceSupperLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="$0"
+                android:textColor="@color/green"
+                android:textSize="@dimen/_17sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5dp"
+                android:text="Tổng"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/priceAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/_17sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

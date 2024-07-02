@@ -16,8 +16,12 @@ import com.main.pubmanagement.base.BaseFragment;
 import com.main.pubmanagement.constant.AppConstant;
 import com.main.pubmanagement.controller.BillController;
 import com.main.pubmanagement.databinding.FragmentHistoryStaffBinding;
+import com.main.pubmanagement.model.Bill;
 import com.main.pubmanagement.sharedpreferences.MySharedPreferences;
 import com.main.pubmanagement.ui.adapter.HistoryBillAdapter;
+
+import java.util.Collections;
+import java.util.List;
 
 
 public class HistoryStaffFragment extends BaseFragment<FragmentHistoryStaffBinding> {
@@ -36,6 +40,8 @@ public class HistoryStaffFragment extends BaseFragment<FragmentHistoryStaffBindi
         billController = new BillController(getActivity());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         binding.recyclerView.setAdapter(historyBillAdapter);
-        historyBillAdapter.setData(billController.getListBillById(MySharedPreferences.getInstance(getActivity()).getInt(AppConstant.COLUMN_USER_ID, 0)));
+        List<Bill> billList = billController.getListBillById(MySharedPreferences.getInstance(getActivity()).getInt(AppConstant.COLUMN_USER_ID, 0));
+        Collections.reverse(billList);
+        historyBillAdapter.setData(billList);
     }
 }

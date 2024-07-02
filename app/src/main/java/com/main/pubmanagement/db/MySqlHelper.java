@@ -380,7 +380,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(sql1);
 
         sql1 = "CREATE TABLE " + AppConstant.TABLE_BILL_INFO + "("
-                + AppConstant.TABLE_BILL_INFO + " INTEGER PRIMARY KEY ,"
+                + AppConstant.COLUMN_BILL_INFO_ID + " INTEGER PRIMARY KEY ,"
                 + AppConstant.COLUMN_BILL_ID + " INTEGER REFERENCES " + AppConstant.TABLE_BILL + "( " + AppConstant.COLUMN_BILL_ID + "),"
                 + AppConstant.COLUMN_MENU_ID + " INTEGER REFERENCES " + AppConstant.TABLE_MENU + "( " + AppConstant.COLUMN_MENU_ID + "),"
                 + AppConstant.COLUMN_BILL_INFO_QUANTITY + " INTEGER NOT NULL ,"

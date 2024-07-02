@@ -15,6 +15,9 @@
         android:theme="@style/Theme.PubManagement"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.InfoBillActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.PayActivity"
             android:exported="false" />
         <activity

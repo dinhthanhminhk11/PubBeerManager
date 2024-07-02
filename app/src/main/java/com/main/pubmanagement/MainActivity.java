@@ -146,17 +146,17 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     break;
                 }
                 case POS_HISTORY_STAFF: {
-                    binding.titleSelect.setText(R.string.table_staff);
+                    binding.titleSelect.setText("");
                     showFragment(new HistoryStaffFragment());
                     break;
                 }
                 case POS_REPORT_LATS_DAY_STAFF: {
-                    binding.titleSelect.setText(R.string.table_staff);
+                    binding.titleSelect.setText("Báo cáo");
                     showFragment(new ReportLatsDayFragment());
                     break;
                 }
                 case POS_SETTING_STAFF: {
-                    binding.titleSelect.setText(R.string.table_staff);
+                    binding.titleSelect.setText("Cài đặt");
                     showFragment(new SettingFragment());
                     break;
                 }
