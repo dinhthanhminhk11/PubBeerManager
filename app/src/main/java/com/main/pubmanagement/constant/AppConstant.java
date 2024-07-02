@@ -2,6 +2,7 @@ package com.main.pubmanagement.constant;
 
 public interface AppConstant {
     String DATA_BASE_NAME = "pubmanagere.db";
+    String DOT = "[.,]";
     String TABLE_USER = "USER";
     String COLUMN_USER_ID = "IDUSER";
     String COLUMN_USER_NAME = "NAMEUSER";
@@ -31,6 +32,8 @@ public interface AppConstant {
     String COLUMN_MENU_PRICE = "PRICEMENU";
     String COLUMN_MENU_UNIT = "UNITMENU";
     String COLUMN_MENU_DISCOUNT = "DISCOUNT";
+    String COLUMN_MENU_CONTENT = "MENUCONTENT";
+    String COLUMN_MENU_COUNT = "MENUCOUNT";
 
     String TABLE_ORDER = "TABLEORDER";
     String COLUMN_ORDER_ID = "IDORDER";

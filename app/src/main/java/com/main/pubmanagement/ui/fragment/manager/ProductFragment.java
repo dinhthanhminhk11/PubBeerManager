@@ -81,7 +81,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> {
                         Intent data = result.getData();
                         if (data != null) {
                             String resultData = data.getStringExtra("Another_Result_Key");
-                            if (resultData.equals("add_success")) {
+                            if (resultData.equals("add_success")) {///
                                 if (ProductFragment.this.resultData.getId() == 0) {
                                     reloadAll();
                                 } else {

@@ -98,7 +98,9 @@ public class MySqlHelper extends SQLiteOpenHelper {
                 + AppConstant.COLUMN_MENU_PRICE + " INTEGER NOT NULL ,"
                 + AppConstant.COLUMN_MENU_UNIT + " INTEGER NOT NULL , "
                 + AppConstant.COLUMN_MENU_TYPE_ID + " INTEGER REFERENCES " + AppConstant.TABLE_MENU_TYPE + "( " + AppConstant.COLUMN_MENU_TYPE_ID + "),"
-                + AppConstant.COLUMN_MENU_DISCOUNT + " INTEGER DEFAULT 0"
+                + AppConstant.COLUMN_MENU_DISCOUNT + " INTEGER DEFAULT 0 ,"
+                + AppConstant.COLUMN_MENU_CONTENT + " TEXT DEFAULT '' ,"
+                + AppConstant.COLUMN_MENU_COUNT + " INTEGER DEFAULT 40 "
                 + ")";
         sqLiteDatabase.execSQL(sql1);
 

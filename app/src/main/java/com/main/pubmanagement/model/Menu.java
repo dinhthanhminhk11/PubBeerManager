@@ -10,9 +10,38 @@ public class Menu implements Serializable {
     private int idMenuType;
     private int discount;
 
-    public Menu() {
+    private String content;
+    private int count;
+
+    public String getContent() {
+        return content;
     }
 
+    public int getCount() {
+        return count;
+
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public Menu(String name, int price, int unit, int idMenuType, int discount, String content, int count) {
+        this.name = name;
+        this.price = price;
+        this.unit = unit;
+        this.idMenuType = idMenuType;
+        this.discount = discount;
+        this.content = content;
+        this.count = count;
+    }
+
+    public Menu() {
+    }
 
 
     public Menu(int id, String name, int price, int unit, int idMenuType, int discount) {
