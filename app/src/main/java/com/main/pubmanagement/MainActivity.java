@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     break;
                 }
                 case POS_PRODUCT_MANAGER: {
-                    binding.titleSelect.setText(R.string.home_manager);
+                    binding.titleSelect.setText("Quản lý món ăn");
                     showFragment(new ProductFragment());
                     break;
                 }

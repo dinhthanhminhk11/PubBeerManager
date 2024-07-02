@@ -1,6 +1,8 @@
 package com.main.pubmanagement.model;
 
-public class MenuType {
+import java.io.Serializable;
+
+public class MenuType implements Serializable {
     private int id;
     private String name;
 

@@ -26,8 +26,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         userController = new UserController(this);
 
-        binding.edEmail.setText("staffdinhminh");
-//        binding.edEmail.setText("dinhthanhminh");
+//        binding.edEmail.setText("staffdinhminh");
+        binding.edEmail.setText("dinhthanhminh");
         binding.edPass.setText("123456");
         binding.btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override

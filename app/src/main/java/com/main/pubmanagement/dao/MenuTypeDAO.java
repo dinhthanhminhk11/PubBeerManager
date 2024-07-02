@@ -1,11 +1,12 @@
 package com.main.pubmanagement.dao;
 
+import com.main.pubmanagement.model.MenuType;
 import com.main.pubmanagement.model.Storey;
 
 import java.util.List;
 
 public interface MenuTypeDAO {
-    void create(String name);
+    long create(MenuType menuType);
 
     void update(int id, String name);
 

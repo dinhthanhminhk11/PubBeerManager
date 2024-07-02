@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.activity.AddCategoryActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/gradientbackground_white"
+        app:titleTextColor="@color/black" />
+
+
+    <EditText
+        android:id="@+id/edPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/textview_border_ver2"
+        android:hint="Tên loại"
+        android:paddingHorizontal="@dimen/_10dp"
+        android:paddingVertical="@dimen/_10dp"
+        android:textSize="@dimen/_18dp" />
+
+
+    <Button
+        android:id="@+id/sumit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_below="@+id/btnAddBill"
+        android:layout_marginHorizontal="@dimen/_10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_buttom"
+        android:text="Lưu"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:backgroundTint="@null" />
+</LinearLayout>
