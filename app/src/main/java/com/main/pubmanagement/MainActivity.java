@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     break;
                 }
                 case POS_SETTING_MANAGER: {
-                    binding.titleSelect.setText(R.string.table_staff);
+                    binding.titleSelect.setText("Thông tin người dùng");
                     showFragment(new SettingFragment());
                     break;
                 }
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     break;
                 }
                 case POS_SETTING_STAFF: {
-                    binding.titleSelect.setText("Cài đặt");
+                    binding.titleSelect.setText("Thông tin người dùng");
                     showFragment(new SettingFragment());
                     break;
                 }

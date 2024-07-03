@@ -2,13 +2,115 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.SettingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="setting" />
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_24dp"
+                android:background="@drawable/background_edit_text_true"
+                android:hint="Họ và tên"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="@dimen/_14dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorDBE0E6"
+                android:textSize="@dimen/_16sp" />
+
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_24dp"
+                android:background="@drawable/background_edit_text_true"
+                android:hint="Số điện thoại"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="@dimen/_14dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorDBE0E6"
+                android:textSize="@dimen/_16sp" />
+
+            <EditText
+                android:id="@+id/cardId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_24dp"
+                android:background="@drawable/background_edit_text_true"
+                android:hint="Cccd"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="@dimen/_14dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorDBE0E6"
+                android:textSize="@dimen/_16sp" />
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_24dp"
+                android:background="@drawable/background_edit_text_true"
+                android:hint="Tài khoản"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="@dimen/_14dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorDBE0E6"
+                android:textSize="@dimen/_16sp" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_24dp"
+                android:background="@drawable/background_edit_text_true"
+                android:hint="Mật khẩu"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="@dimen/_14dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorDBE0E6"
+                android:textSize="@dimen/_16sp" />
+
+            <Button
+                android:id="@+id/sumit"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_below="@+id/btnAddBill"
+                android:layout_marginHorizontal="@dimen/_10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_buttom"
+                android:text="Thêm"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@null" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>
