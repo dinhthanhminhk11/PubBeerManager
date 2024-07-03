@@ -1,9 +1,11 @@
 package com.main.pubmanagement.controller;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.main.pubmanagement.constant.AppConstant;
 import com.main.pubmanagement.dao.MenuDAO;
@@ -86,4 +88,18 @@ public class MenuController implements MenuDAO {
         this.sqLiteDatabase.close();
         return list;
     }
+
+    public void updateMenuCount(int menuId, int newCount) {
+        SQLiteDatabase db = mySqlHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(AppConstant.COLUMN_MENU_COUNT, newCount);
+        int rowsAffected = db.update(AppConstant.TABLE_MENU, values, AppConstant.COLUMN_MENU_ID + " = ?", new String[]{String.valueOf(menuId)});
+        if (rowsAffected > 0) {
+            Log.d("UpdateMenuCount", "Menu count updated successfully for menuId: " + menuId);
+        } else {
+            Log.d("UpdateMenuCount", "Failed to update menu count for menuId: " + menuId);
+        }
+        db.close();
+    }
+
 }

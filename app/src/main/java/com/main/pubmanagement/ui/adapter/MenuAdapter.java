@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,9 +79,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             holder.itemMenuBinding.nameUser.setText(item.getName());
             if (item.getDiscount() != 0) {
                 holder.itemMenuBinding.content.setVisibility(View.VISIBLE);
-                holder.itemMenuBinding.content.setText("Giảm giá: " + item.getDiscount() + "%");
+                holder.itemMenuBinding.content.setText("Giảm giá: " + item.getDiscount() + "%" + (item.getCount() ==0 ? " Hết hàng" :" Sl tồn: " + item.getCount()));
             } else {
-                holder.itemMenuBinding.content.setVisibility(View.GONE);
+                holder.itemMenuBinding.content.setText(item.getCount() ==0 ? " Hết hàng" :" Sl tồn: " + item.getCount());
+                holder.itemMenuBinding.content.setVisibility(View.VISIBLE);
             }
             holder.itemMenuBinding.price.setText(decimalFormat.format(item.getPrice()) + "₫");
             holder.itemMenuBinding.unit.setText(" /" + checkUnit(item.getUnit()));
@@ -94,21 +96,25 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectedItems.contains(item)) {
+                    if (item.getCount() == 0) {
+                        Toast.makeText(v.getContext(), "Món ăn đã hết hàng", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (selectedItems.contains(item)) {
 //                        if (count > 1) {
 //                            cartMap.put(item, count - 1);
 //                        } else {
 //                            selectedItems.remove(item);
 //                            cartMap.remove(item);
 //                        }
-                    } else {
-                        selectedItems.add(item);
-                        cartMap.put(item, 1);
-                    }
-                    notifyItemChanged(position);
-                    if (callback != null) {
-                        callback.onClick(item.getId());
-                        callback.callSum(cartMap);
+                        } else {
+                            selectedItems.add(item);
+                            cartMap.put(item, 1);
+                        }
+                        notifyItemChanged(position);
+                        if (callback != null) {
+                            callback.onClick(item.getId());
+                            callback.callSum(cartMap);
+                        }
                     }
                 }
             });
@@ -137,15 +143,20 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onClick(View view) {
-                    if (selectedItems.contains(item)) {
-                        cartMap.put(item, count + 1);
+                    int currentCount = cartMap.containsKey(item) ? cartMap.get(item) : 0;
+                    if (currentCount >= item.getCount()) {
+                        Toast.makeText(view.getContext(), "Không thể thêm quá số lượng hiện có", Toast.LENGTH_SHORT).show();
                     } else {
-                        selectedItems.add(item);
-                        cartMap.put(item, 1);
-                    }
-                    notifyDataSetChanged();
-                    if (callback != null) {
-                        callback.callSum(cartMap);
+                        if (selectedItems.contains(item)) {
+                            cartMap.put(item, currentCount + 1);
+                        } else {
+                            selectedItems.add(item);
+                            cartMap.put(item, 1);
+                        }
+                        notifyDataSetChanged();
+                        if (callback != null) {
+                            callback.callSum(cartMap);
+                        }
                     }
                 }
             });

@@ -175,6 +175,17 @@ public class AddMenuActivity extends AppCompatActivity {
                     key.getName(),
                     key.getId()
             ));
+
+            for (OrderDetails order : listOrderDetails
+            ) {
+                if (key.getId() == order.getIdMenu()) {
+                    if (value > order.getQuantity()) {
+                        menuController.updateMenuCount(key.getId(), key.getCount() - (value - order.getQuantity()));
+                    } else {
+                        menuController.updateMenuCount(key.getId(), key.getCount() + (order.getQuantity() - value));
+                    }
+                }
+            }
         }
     }
 

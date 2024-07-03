@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.main.pubmanagement.R;
 import com.main.pubmanagement.constant.AppConstant;
+import com.main.pubmanagement.controller.MenuController;
 import com.main.pubmanagement.controller.OderController;
 import com.main.pubmanagement.databinding.ActivityAddBillBinding;
 import com.main.pubmanagement.databinding.ActivityEditBillBinding;
@@ -34,6 +35,7 @@ public class EditBillActivity extends AppCompatActivity {
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");
     private ActivityEditBillBinding binding;
     private OderController oderController;
+    private MenuController menuController;
     private long idOrder;
     private static final int REQUEST_CODE_ADD_MENU = 1;
     private Order order;
@@ -51,6 +53,7 @@ public class EditBillActivity extends AppCompatActivity {
 
 
         oderController = new OderController(this);
+        menuController = new MenuController(this);
         listOrderDetails = new ArrayList<>();
         idOrder = getIntent().getLongExtra(AppConstant.COLUMN_ORDER_ID, -1);
         order = oderController.getOrderById(idOrder);

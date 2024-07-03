@@ -163,6 +163,7 @@ public class AddBillActivity extends AppCompatActivity {
                                 key.getName(),
                                 key.getId()
                         ));
+                        menuController.updateMenuCount(key.getId(), key.getCount() - value);
                     }
                     Toast.makeText(AddBillActivity.this, "Order Thành Công", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AddBillActivity.this, EditBillActivity.class);
