@@ -13,6 +13,8 @@ public class Menu implements Serializable {
     private String content;
     private int count;
 
+
+
     public String getContent() {
         return content;
     }

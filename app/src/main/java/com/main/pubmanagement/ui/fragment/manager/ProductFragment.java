@@ -128,13 +128,13 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> {
     private void iniDataListAll() {
         menuList = menuController.getListMenu();
         productAdapter.setData(menuList);
-        binding.count.setText(menuList.size() + " món");
+        binding.count.setText(menuList.size() + " món Sl tồn: " + getCountProduct(menuList));
     }
 
     public void reloadAll() {
         menuList = menuController.getListMenu();
         productAdapter.setData(menuList);
-        binding.count.setText(menuList.size() + " món");
+        binding.count.setText(menuList.size() + " món Sl tồn: " + getCountProduct(menuList));
     }
 
     private void iniDataListById(int id) {
@@ -146,12 +146,20 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> {
             }
         }
         productAdapter.setData(menuListSoft);
-        binding.count.setText(menuListSoft.size() + " món");
+        binding.count.setText(menuListSoft.size() + " món Sl tồn: " + getCountProduct(menuListSoft));
     }
 
     private void reload(int id) {
         menuList = menuController.getListMenuByIdMenuType(id);
         productAdapter.setData(menuList);
         binding.count.setText(menuList.size() + " món");
+    }
+
+    private int getCountProduct(List<Menu> list) {
+        int count =0;
+        for (Menu menu : list) {
+            count+= menu.getCount();
+        }
+        return count;
     }
 }

@@ -46,4 +46,7 @@
     <color name="color4CAF50">#4CAF50</color>
     <color name="colorDBE0E6">#DBE0E6</color>
     <color name="colorbackground">#F5F5F5</color>
+    <color name="color_2F3046">#2F3046</color>
+    <color name="orange">#FF663C</color>
+
 </resources>

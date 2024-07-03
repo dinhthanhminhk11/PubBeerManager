@@ -14,6 +14,7 @@ import com.main.pubmanagement.model.Bill;
 import com.main.pubmanagement.model.BillInfo;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class BillController implements BillDAO {
@@ -173,9 +174,11 @@ public class BillController implements BillDAO {
     @SuppressLint("Range")
     public int getTotalRevenueByUserId(int userId) {
         SQLiteDatabase db = mySqlHelper.getReadableDatabase();
-        String query = "SELECT SUM(" + AppConstant.COLUMN_BILL_PRICE + ") AS totalRevenue FROM " + AppConstant.TABLE_BILL +
-                " WHERE " + AppConstant.COLUMN_USER_ID + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+        String query = "SELECT SUM(" + AppConstant.COLUMN_BILL_PRICE + ") AS totalRevenue FROM " + AppConstant.TABLE_BILL;
+        if (userId != 0) {
+            query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ?";
+        }
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId)} : null);
 
         int totalRevenue = 0;
         if (cursor.moveToFirst()) {
@@ -190,9 +193,11 @@ public class BillController implements BillDAO {
     @SuppressLint("Range")
     public int getTotalDiscountRevenueByUserId(int userId) {
         SQLiteDatabase db = mySqlHelper.getReadableDatabase();
-        String query = "SELECT SUM(" + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + ") AS totalDiscountRevenue FROM " + AppConstant.TABLE_BILL +
-                " WHERE " + AppConstant.COLUMN_USER_ID + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+        String query = "SELECT SUM(" + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + ") AS totalDiscountRevenue FROM " + AppConstant.TABLE_BILL;
+        if (userId != 0) {
+            query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ?";
+        }
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId)} : null);
 
         int totalDiscountRevenue = 0;
         if (cursor.moveToFirst()) {
@@ -207,9 +212,11 @@ public class BillController implements BillDAO {
     @SuppressLint("Range")
     public int getTotalCustomersServedByUserId(int userId) {
         SQLiteDatabase db = mySqlHelper.getReadableDatabase();
-        String query = "SELECT SUM(" + AppConstant.COLUMN_BILL_COUNT_PERSON + ") AS totalCustomersServed FROM " + AppConstant.TABLE_BILL +
-                " WHERE " + AppConstant.COLUMN_USER_ID + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+        String query = "SELECT SUM(" + AppConstant.COLUMN_BILL_COUNT_PERSON + ") AS totalCustomersServed FROM " + AppConstant.TABLE_BILL;
+        if (userId != 0) {
+            query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ?";
+        }
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId)} : null);
 
         int totalCustomersServed = 0;
         if (cursor.moveToFirst()) {
@@ -224,10 +231,11 @@ public class BillController implements BillDAO {
     @SuppressLint("Range")
     public int getTotalCustomersBeingServedByUserId(int userId) {
         SQLiteDatabase db = mySqlHelper.getReadableDatabase();
-        String query = "SELECT SUM(" + AppConstant.COLUMN_ORDER_PERSON + ") AS totalCustomersBeingServed FROM " + AppConstant.TABLE_ORDER +
-                " WHERE " + AppConstant.COLUMN_USER_ID + " = ? AND " + AppConstant.COLUMN_ORDER_STATUS + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), "0"}); // Giả sử trạng thái 1 là đang phục vụ
-
+        String query = "SELECT SUM(" + AppConstant.COLUMN_ORDER_PERSON + ") AS totalCustomersBeingServed FROM " + AppConstant.TABLE_ORDER;
+        if (userId != 0) {
+            query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ? AND " + AppConstant.COLUMN_ORDER_STATUS + " = ?";
+        }
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId), "0"} : null);
         int totalCustomersBeingServed = 0;
         if (cursor.moveToFirst()) {
             totalCustomersBeingServed = cursor.getInt(cursor.getColumnIndex("totalCustomersBeingServed"));
@@ -239,12 +247,76 @@ public class BillController implements BillDAO {
     }
 
     @SuppressLint("Range")
+    public int getTotalAmountBeingServedByUserId(int userId) {
+        SQLiteDatabase db = mySqlHelper.getReadableDatabase();
+        String query = "SELECT SUM(" + AppConstant.COLUMN_ORDER_TOTAL_PRICE + ") AS totalAmountBeingServed FROM " + AppConstant.TABLE_ORDER;
+        if (userId != 0) {
+            query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ? AND " + AppConstant.COLUMN_ORDER_STATUS + " = ?";
+        }
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId), "0"} : null);
+        int totalAmountBeingServed = 0;
+        if (cursor.moveToFirst()) {
+            totalAmountBeingServed = cursor.getInt(cursor.getColumnIndex("totalAmountBeingServed"));
+        }
+
+        cursor.close();
+        db.close();
+        return totalAmountBeingServed;
+    }
+
+    @SuppressLint("Range")
+    public int getTotalOrdersByUserId(int userId) {
+        SQLiteDatabase db = mySqlHelper.getReadableDatabase();
+        String query = "SELECT COUNT(*) AS totalOrders FROM " + AppConstant.TABLE_ORDER;
+        if (userId != 0) {
+            query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ? AND " + AppConstant.COLUMN_ORDER_STATUS + " = ?";
+        }
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId), "0"} : null);
+        int totalOrders = 0;
+        if (cursor.moveToFirst()) {
+            totalOrders = cursor.getInt(cursor.getColumnIndex("totalOrders"));
+        }
+
+        cursor.close();
+        db.close();
+        return totalOrders;
+    }
+
+    @SuppressLint("Range")
+    public LinkedHashMap<String, Float> getTotalBillsForLast7Days() {
+        LinkedHashMap<String, Float> entries = new LinkedHashMap<>();
+        SQLiteDatabase db = mySqlHelper.getReadableDatabase();
+
+        String query = "SELECT DATE(" + AppConstant.COLUMN_BILL_TIME + "/1000, 'unixepoch', 'localtime') as date, " +
+                "SUM(" + AppConstant.COLUMN_BILL_PRICE + ") as total " +
+                "FROM " + AppConstant.TABLE_BILL +
+                " WHERE DATE(" + AppConstant.COLUMN_BILL_TIME + "/1000, 'unixepoch', 'localtime') >= DATE('now', '-7 days') " +
+                "GROUP BY date " +
+                "ORDER BY date ASC";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                float total = cursor.getFloat(cursor.getColumnIndex("total"));
+                entries.put(date, total);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return entries;
+    }
+
+    @SuppressLint("Range")
     public int getTotalBillsByUserId(int userId) {
         SQLiteDatabase db = mySqlHelper.getReadableDatabase();
-        String query = "SELECT COUNT(*) AS totalBills FROM " + AppConstant.TABLE_BILL +
-                " WHERE " + AppConstant.COLUMN_USER_ID + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
-
+        String query = "SELECT COUNT(*) AS totalBills FROM " + AppConstant.TABLE_BILL;
+        if (userId != 0) {
+            query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ?";
+        }
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId)} : null);
         int totalBills = 0;
         if (cursor.moveToFirst()) {
             totalBills = cursor.getInt(cursor.getColumnIndex("totalBills"));
@@ -258,10 +330,14 @@ public class BillController implements BillDAO {
     @SuppressLint("Range")
     public int getTotalDiscountBillsByUserId(int userId) {
         SQLiteDatabase db = mySqlHelper.getReadableDatabase();
-        String query = "SELECT COUNT(*) AS totalDiscountBills FROM " + AppConstant.TABLE_BILL +
-                " WHERE " + AppConstant.COLUMN_USER_ID + " = ? AND " + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + " > 0";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+        String query = "SELECT COUNT(*) AS totalDiscountBills FROM " + AppConstant.TABLE_BILL;
 
+        if (userId != 0) {
+            query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ? AND " + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + " > 0";
+        } else {
+            query += " WHERE " + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + " > 0";
+        }
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId)} : null);
         int totalDiscountBills = 0;
         if (cursor.moveToFirst()) {
             totalDiscountBills = cursor.getInt(cursor.getColumnIndex("totalDiscountBills"));
@@ -276,10 +352,13 @@ public class BillController implements BillDAO {
     @SuppressLint("Range")
     public int getTotalBillsByTypeAndUserId(int userId, int type) {
         SQLiteDatabase db = mySqlHelper.getReadableDatabase();
-        String query = "SELECT COUNT(*) AS totalBillsByType FROM " + AppConstant.TABLE_BILL +
-                " WHERE " + AppConstant.COLUMN_USER_ID + " = ? AND " + AppConstant.COLUMN_BILL_TYPE + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), String.valueOf(type)});
-
+        String query = "SELECT COUNT(*) AS totalBillsByType FROM " + AppConstant.TABLE_BILL;
+        if (userId != 0) {
+            query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ? AND " + AppConstant.COLUMN_BILL_TYPE + " = ?";
+        } else {
+            query += " WHERE " +  AppConstant.COLUMN_BILL_TYPE + " = ?";
+        }
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId), String.valueOf(type)} : new String[]{ String.valueOf(type)});
         int totalBillsByType = 0;
         if (cursor.moveToFirst()) {
             totalBillsByType = cursor.getInt(cursor.getColumnIndex("totalBillsByType"));
@@ -312,6 +391,38 @@ public class BillController implements BillDAO {
         SQLiteDatabase db = mySqlHelper.getWritableDatabase();
         db.delete(AppConstant.TABLE_BILL_INFO, AppConstant.COLUMN_BILL_ID + " = ?", new String[]{String.valueOf(billDetail)});
         db.close();
+    }
+
+    public int getTotalTables() {
+        SQLiteDatabase db = mySqlHelper.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM " + AppConstant.TABLE_TABLE_RESTAURANT;
+        Cursor cursor = db.rawQuery(query, null);
+
+        int totalTables = 0;
+        if (cursor.moveToFirst()) {
+            totalTables = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return totalTables;
+    }
+
+    public int getActiveTables() {
+        SQLiteDatabase db = mySqlHelper.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM " + AppConstant.TABLE_TABLE_RESTAURANT + " WHERE " + AppConstant.COLUMN_RESTAURANT_STATUS + " = 1";
+        Cursor cursor = db.rawQuery(query, null);
+
+        int activeTables = 0;
+        if (cursor.moveToFirst()) {
+            activeTables = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return activeTables;
     }
 
 }

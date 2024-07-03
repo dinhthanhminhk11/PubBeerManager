@@ -52,6 +52,7 @@ public class MenuController implements MenuDAO {
                 menu.setUnit(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_MENU_UNIT)));
                 menu.setIdMenuType(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_MENU_TYPE_ID)));
                 menu.setDiscount(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_MENU_DISCOUNT)));
+                menu.setCount(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_MENU_COUNT)));
                 list.add(menu);
                 cursor.moveToNext();
             }
