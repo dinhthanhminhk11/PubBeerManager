@@ -12,6 +12,8 @@ import com.main.pubmanagement.dao.BillDAO;
 import com.main.pubmanagement.db.MySqlHelper;
 import com.main.pubmanagement.model.Bill;
 import com.main.pubmanagement.model.BillInfo;
+import com.main.pubmanagement.model.Payment;
+import com.main.pubmanagement.model.User;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -54,7 +56,7 @@ public class BillController implements BillDAO {
 
     @SuppressLint("Range")
     @Override
-    public List<Bill> getListBillById(int idUser) {
+    public List<Bill> getListBillById(int idUser, long startDate, long endDate) {
         List<Bill> billList = new ArrayList<>();
         SQLiteDatabase db = mySqlHelper.getReadableDatabase();
 
@@ -65,9 +67,9 @@ public class BillController implements BillDAO {
                 " FROM " + AppConstant.TABLE_BILL + " b" +
                 " JOIN " + AppConstant.TABLE_TABLE_RESTAURANT + " r ON b." + AppConstant.COLUMN_RESTAURANT_ID + " = r." + AppConstant.COLUMN_RESTAURANT_ID +
                 " JOIN " + AppConstant.TABLE_STOREY + " s ON r." + AppConstant.COLUMN_STOREY_ID + " = s." + AppConstant.COLUMN_STOREY_ID +
-                " WHERE b." + AppConstant.COLUMN_USER_ID + " = ?";
+                " WHERE b." + AppConstant.COLUMN_USER_ID + " = ? AND " + "b." + AppConstant.COLUMN_BILL_TIME + " BETWEEN ? AND ?";
         Log.e("Minh", "qurey " + query);
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idUser)});
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(startDate), String.valueOf(endDate)});
 
         if (cursor.moveToFirst()) {
             do {
@@ -80,6 +82,64 @@ public class BillController implements BillDAO {
                 bill.setCountPerson(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_COUNT_PERSON)));
                 bill.setNameTable(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_RESTAURANT_NAME)));
                 bill.setStoreyName(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_STOREY_NAME)));
+                billList.add(bill);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return billList;
+    }
+
+    @SuppressLint("Range")
+    public List<Bill> getListBill(long startDate, long endDate, List<User> selectedUsers, List<Payment> selectedPayments) {
+        List<Bill> billList = new ArrayList<>();
+        SQLiteDatabase db = mySqlHelper.getReadableDatabase();
+        StringBuilder userIdsStr = new StringBuilder();
+        for (int i = 0; i < selectedUsers.size(); i++) {
+            userIdsStr.append(selectedUsers.get(i).getId());
+            if (i < selectedUsers.size() - 1) {
+                userIdsStr.append(",");
+            }
+        }
+        StringBuilder paymentTypesStr = new StringBuilder();
+        for (int i = 0; i < selectedPayments.size(); i++) {
+            paymentTypesStr.append(selectedPayments.get(i).getId());
+            if (i < selectedPayments.size() - 1) {
+                paymentTypesStr.append(",");
+            }
+        }
+        String query = "SELECT b." + AppConstant.COLUMN_BILL_ID + ", b." + AppConstant.COLUMN_BILL_TYPE + ", " +
+                "b." + AppConstant.COLUMN_BILL_PRICE + ", b." + AppConstant.COLUMN_BILL_PRICE_DISCOUNT + ", " +
+                "b." + AppConstant.COLUMN_BILL_TIME + ", b." + AppConstant.COLUMN_BILL_COUNT_PERSON + ", " +
+                "r." + AppConstant.COLUMN_RESTAURANT_NAME + ", s." + AppConstant.COLUMN_STOREY_NAME + ", " +
+                "u." + AppConstant.COLUMN_USER_NAME +
+                " FROM " + AppConstant.TABLE_BILL + " b" +
+                " JOIN " + AppConstant.TABLE_TABLE_RESTAURANT + " r ON b." + AppConstant.COLUMN_RESTAURANT_ID + " = r." + AppConstant.COLUMN_RESTAURANT_ID +
+                " JOIN " + AppConstant.TABLE_STOREY + " s ON r." + AppConstant.COLUMN_STOREY_ID + " = s." + AppConstant.COLUMN_STOREY_ID +
+                " JOIN " + AppConstant.TABLE_USER + " u ON b." + AppConstant.COLUMN_USER_ID + " = u." + AppConstant.COLUMN_USER_ID +
+                " WHERE b." + AppConstant.COLUMN_BILL_TIME + " BETWEEN ? AND ?" +
+                " AND b." + AppConstant.COLUMN_BILL_TYPE + " IN (" + paymentTypesStr.toString() + ")" +
+                " AND b." + AppConstant.COLUMN_USER_ID + " IN (" + userIdsStr.toString() + ")";
+
+        Cursor cursor = db.rawQuery(query, new String[]{
+                String.valueOf(startDate),
+                String.valueOf(endDate)
+        });
+
+        if (cursor.moveToFirst()) {
+            do {
+                Bill bill = new Bill();
+                bill.setId(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_ID)));
+                bill.setType(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_TYPE)));
+                bill.setPrice(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_PRICE)));
+                bill.setPriceDiscount(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_PRICE_DISCOUNT)));
+                bill.setTime(cursor.getLong(cursor.getColumnIndex(AppConstant.COLUMN_BILL_TIME)));
+                bill.setCountPerson(cursor.getInt(cursor.getColumnIndex(AppConstant.COLUMN_BILL_COUNT_PERSON)));
+                bill.setNameTable(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_RESTAURANT_NAME)));
+                bill.setStoreyName(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_STOREY_NAME)));
+                bill.setNameUser(cursor.getString(cursor.getColumnIndex(AppConstant.COLUMN_USER_NAME)));
                 billList.add(bill);
             } while (cursor.moveToNext());
         }
@@ -356,9 +416,9 @@ public class BillController implements BillDAO {
         if (userId != 0) {
             query += " WHERE " + AppConstant.COLUMN_USER_ID + " = ? AND " + AppConstant.COLUMN_BILL_TYPE + " = ?";
         } else {
-            query += " WHERE " +  AppConstant.COLUMN_BILL_TYPE + " = ?";
+            query += " WHERE " + AppConstant.COLUMN_BILL_TYPE + " = ?";
         }
-        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId), String.valueOf(type)} : new String[]{ String.valueOf(type)});
+        Cursor cursor = db.rawQuery(query, userId != 0 ? new String[]{String.valueOf(userId), String.valueOf(type)} : new String[]{String.valueOf(type)});
         int totalBillsByType = 0;
         if (cursor.moveToFirst()) {
             totalBillsByType = cursor.getInt(cursor.getColumnIndex("totalBillsByType"));

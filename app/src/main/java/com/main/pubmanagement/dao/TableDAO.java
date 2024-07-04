@@ -7,15 +7,17 @@ import com.main.pubmanagement.model.Table;
 import java.util.List;
 
 public interface TableDAO {
-    void create(String name);
+    long create(String name, int countChair, int idStorey);
 
-    void update(int id, String name);
+    long update(int id, String name, int countChair);
 
-    void create(int id);
+    void delete(int id);
 
     List<Table> getListTable();
 
     List<Table> getListTableByIdStorey(int id);
+
     List<Table> getListTableByStatus(boolean status);
+
     List<Order> getOrdersByRestaurantId(int restaurantId);
 }

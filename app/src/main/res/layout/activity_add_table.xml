@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.activity.AddTableActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/gradientbackground_white"
+        app:titleTextColor="@color/black" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_24dp"
+                android:background="@drawable/background_edit_text_true"
+                android:hint="Tên bàn"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="@dimen/_14dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorDBE0E6"
+                android:textSize="@dimen/_16sp" />
+
+
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_24dp"
+                android:background="@drawable/background_edit_text_true"
+                android:hint="Số ghế có thể ngồi"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="@dimen/_14dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorDBE0E6"
+                android:textSize="@dimen/_16sp" />
+
+            <Button
+                android:id="@+id/sumit"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_below="@+id/btnAddBill"
+                android:layout_marginHorizontal="@dimen/_10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_buttom"
+                android:text="Thêm"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@null" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

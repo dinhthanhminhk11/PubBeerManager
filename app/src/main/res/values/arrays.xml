@@ -7,6 +7,7 @@
         <item />
         <item>@string/bill_manager</item>
         <item>@string/fund_number_manager</item>
+        <item>@string/storey</item>
         <item />
         <item>@string/setting</item>
         <item>@string/logout</item>
@@ -39,6 +40,7 @@
         <item>0</item>
         <item>@drawable/ic_bill_manager</item>
         <item>@drawable/ic_fund_number_manager</item>
+        <item>@drawable/home_icon_manager</item>
         <item>0</item>
         <item>@drawable/ic_setting</item>
         <item>@drawable/ic_logout</item>

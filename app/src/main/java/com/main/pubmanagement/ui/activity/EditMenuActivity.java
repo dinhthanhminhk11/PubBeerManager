@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,23 +95,25 @@ public class EditMenuActivity extends AppCompatActivity {
         binding.sumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (menuTypeController.editMenu(new com.main.pubmanagement.model.Menu(
-                        menu.getId(),
-                        binding.name.getText().toString(),
-                        Integer.parseInt(binding.price.getText().toString().replaceAll(AppConstant.DOT, "")),
-                        convertUnitToNumber(nameUnit),
-                        idMenuType,
-                        Integer.parseInt(binding.priceDiscount.getText().toString()),
-                        binding.content.getText().toString().equals("") ? null : binding.content.getText().toString(),
-                        Integer.parseInt(binding.count.getText().toString())
-                )) > 0) {
-                    Toast.makeText(EditMenuActivity.this, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("Another_Result_Key", "add_success");
-                    setResult(Activity.RESULT_OK, returnIntent);
-                    finish();
-                } else {
-                    Toast.makeText(EditMenuActivity.this, "Sửa thất bại", Toast.LENGTH_SHORT).show();
+                if (isValid()) {
+                    if (menuTypeController.editMenu(new com.main.pubmanagement.model.Menu(
+                            menu.getId(),
+                            binding.name.getText().toString(),
+                            Integer.parseInt(binding.price.getText().toString().replaceAll(AppConstant.DOT, "")),
+                            convertUnitToNumber(nameUnit),
+                            idMenuType,
+                            Integer.parseInt(binding.priceDiscount.getText().toString()),
+                            binding.content.getText().toString().equals("") ? null : binding.content.getText().toString(),
+                            Integer.parseInt(binding.count.getText().toString())
+                    )) > 0) {
+                        Toast.makeText(EditMenuActivity.this, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra("Another_Result_Key", "add_success");
+                        setResult(Activity.RESULT_OK, returnIntent);
+                        finish();
+                    } else {
+                        Toast.makeText(EditMenuActivity.this, "Sửa thất bại", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -226,8 +229,8 @@ public class EditMenuActivity extends AppCompatActivity {
                 } else {
                     et.setSelection(et.getText().length() - 1);
                 }
-            } catch (NumberFormatException nfe) {
-            } catch (ParseException e) {
+            } catch (NumberFormatException | ParseException nfe) {
+
             }
 
             et.addTextChangedListener(this);
@@ -244,5 +247,19 @@ public class EditMenuActivity extends AppCompatActivity {
                 hasFractionalPart = false;
             }
         }
+    }
+
+    private boolean isValid() {
+        if (TextUtils.isEmpty(binding.name.getText().toString())) {
+            binding.name.setError("Tên món không đc để trống");
+            return false;
+        } else if (TextUtils.isEmpty(binding.price.getText().toString())) {
+            binding.price.setError("Giá không đc để trống");
+            return false;
+        } else if (TextUtils.isEmpty(binding.count.getText().toString())) {
+            binding.price.setError("Số lượng không đc để trống");
+            return false;
+        }
+        return true;
     }
 }

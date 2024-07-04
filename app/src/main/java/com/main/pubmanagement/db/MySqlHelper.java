@@ -27,9 +27,9 @@ public class MySqlHelper extends SQLiteOpenHelper {
                 ")";
         sqLiteDatabase.execSQL(sql1);
 
-        sql1 = "INSERT INTO " + AppConstant.TABLE_USER + " VALUES ( null ,'Đinh Thanh Minh', '0375684487','040505998765' , 'dinhthanhminh' ,'123456' , 0 , 0 , 1200000)";
+        sql1 = "INSERT INTO " + AppConstant.TABLE_USER + " VALUES ( null ,'Ad min 1234', '0375684487','040505998765' , 'adminnguyenvan' ,'123456789' , 0 , 0 , 1200000)";
         sqLiteDatabase.execSQL(sql1);
-        sql1 = "INSERT INTO " + AppConstant.TABLE_USER + " VALUES ( null ,'Đinh Thanh Minh Nhan Vien', '0375684487','040505998765' ,'staffdinhminh' ,'123456' , 1 , 1, 1200000)";
+        sql1 = "INSERT INTO " + AppConstant.TABLE_USER + " VALUES ( null ,'Nhan vien 1234', '0375684487','040505998765' ,'nhanviennguyenvan' ,'123456789' , 1 , 1, 1200000)";
         sqLiteDatabase.execSQL(sql1);
 
         sql1 = "CREATE TABLE " + AppConstant.TABLE_STOREY + "(" + AppConstant.COLUMN_STOREY_ID + " INTEGER PRIMARY KEY , " + AppConstant.COLUMN_STOREY_NAME + " TEXT NOT NULL " + ")";
@@ -48,8 +48,7 @@ public class MySqlHelper extends SQLiteOpenHelper {
                 + AppConstant.COLUMN_RESTAURANT_NAME + " TEXT NOT NULL, "
                 + AppConstant.COLUMN_RESTAURANT_COUNT_CHAIR + " INTEGER NOT NULL, "
                 + AppConstant.COLUMN_RESTAURANT_STATUS + " INTEGER NOT NULL, "
-                + AppConstant.COLUMN_STOREY_ID + " INTEGER REFERENCES "
-                + AppConstant.TABLE_STOREY + "( " + AppConstant.COLUMN_STOREY_ID + ")"
+                + AppConstant.COLUMN_STOREY_ID + " INTEGER REFERENCES " + AppConstant.TABLE_STOREY + "( " + AppConstant.COLUMN_STOREY_ID + ")"
                 + ")";
         sqLiteDatabase.execSQL(sql1);
 

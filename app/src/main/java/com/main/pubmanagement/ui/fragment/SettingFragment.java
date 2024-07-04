@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,15 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> {
         binding.sumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogLogOut();
+                if (isValid(
+                        binding.username.getText().toString(),
+                        binding.password.getText().toString(),
+                        binding.name.getText().toString(),
+                        binding.cardId.getText().toString(),
+                        binding.phone.getText().toString()
+                )) {
+                    showDialogLogOut();
+                }
             }
         });
     }
@@ -80,5 +89,36 @@ public class SettingFragment extends BaseFragment<FragmentSettingBinding> {
                 }
         );
         dialog.show();
+    }
+
+    private boolean isValid(String username, String password, String name, String cardId, String phone) {
+        if (TextUtils.isEmpty(username)) {
+            binding.username.setError("Tài khoản không được để trống");
+            return false;
+        } else if (username.length() < 8 || username.length() > 15) {
+            binding.username.setError("Tài khoản phải lớn hơn 8 kí tự và bé hơn 15 kí tự");
+            return false;
+        }
+        if (TextUtils.isEmpty(name)) {
+            binding.name.setError("Tên không đc để trống");
+            return false;
+        }
+        if (TextUtils.isEmpty(cardId)) {
+            binding.cardId.setError("Cccd không đc để trống");
+            return false;
+        }
+        if (TextUtils.isEmpty(phone)) {
+            binding.phone.setError("Số điện thoại không đc để trống");
+            return false;
+        }
+        if (TextUtils.isEmpty(password)) {
+            binding.password.setError("Mật khẩu không được để trống");
+            return false;
+        } else if (password.length() < 8 || password.length() > 15) {
+            binding.password.setError("Mật khẩu phải lớn hơn 8 kí tự và bé hơn 15 kí tự");
+            return false;
+        }
+
+        return true;
     }
 }

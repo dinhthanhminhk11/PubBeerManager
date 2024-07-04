@@ -1,6 +1,12 @@
 package com.main.pubmanagement;
 
-import static androidx.core.text.SpannableStringBuilderKt.color;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -10,16 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.widget.Toast;
-
 import com.main.pubmanagement.constant.AppConstant;
-import com.main.pubmanagement.databinding.ActivityLoginBinding;
 import com.main.pubmanagement.databinding.ActivityMainBinding;
 import com.main.pubmanagement.sharedpreferences.MySharedPreferences;
 import com.main.pubmanagement.ui.activity.LoginActivity;
@@ -30,6 +27,7 @@ import com.main.pubmanagement.ui.fragment.manager.BillFragment;
 import com.main.pubmanagement.ui.fragment.manager.FundNumberFragment;
 import com.main.pubmanagement.ui.fragment.manager.HomeFragment;
 import com.main.pubmanagement.ui.fragment.manager.ProductFragment;
+import com.main.pubmanagement.ui.fragment.manager.StoreyFragment;
 import com.main.pubmanagement.ui.fragment.staff.HistoryStaffFragment;
 import com.main.pubmanagement.ui.fragment.staff.ReportLatsDayFragment;
 import com.main.pubmanagement.ui.fragment.staff.TableStaffFragment;
@@ -45,9 +43,10 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int POS_HOME_MANAGER = 0;
     private static final int POS_PRODUCT_MANAGER = 1;
     private static final int POS_BILL_MANAGER = 3;
+    private static final int POS_MANAGER_STOREY = 5;
     private static final int POS_FUND_NUMBER_MANAGER = 4;
-    private static final int POS_SETTING_MANAGER = 6;
-    private static final int POS_LOGOUT_MANAGER = 7;
+    private static final int POS_SETTING_MANAGER = 7;
+    private static final int POS_LOGOUT_MANAGER = 8;
 
     private static final int POS_TABLE_STAFF = 0;
     private static final int POS_HISTORY_STAFF = 2;
@@ -80,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     new SpaceItem(48),
                     createItemFor(POS_BILL_MANAGER),
                     createItemFor(POS_FUND_NUMBER_MANAGER),
+                    createItemFor(POS_MANAGER_STOREY),
                     new SpaceItem(48),
                     createItemFor(POS_SETTING_MANAGER),
                     createItemFor(POS_LOGOUT_MANAGER)
@@ -126,6 +126,11 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 case POS_FUND_NUMBER_MANAGER: {
                     binding.titleSelect.setText("Nhân sự");
                     showFragment(new FundNumberFragment());
+                    break;
+                }
+                case POS_MANAGER_STOREY: {
+                    binding.titleSelect.setText("Cơ sở vật chất");
+                    showFragment(new StoreyFragment());
                     break;
                 }
                 case POS_SETTING_MANAGER: {
@@ -206,7 +211,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, fragment).commit();
     }
-    private void showDialogLogOut(){
+
+    private void showDialogLogOut() {
         DialogConfirmCustom dialog = DialogConfirmCustom.create(
                 this,
                 "Bạn có muốn đăng xuất không",

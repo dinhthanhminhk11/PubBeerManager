@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,21 +79,23 @@ public class EditMemberActivity extends AppCompatActivity {
         binding.sumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userController.editMember(new User(
-                        user.getId(),
-                        binding.name.getText().toString(),
-                        binding.phone.getText().toString(),
-                        binding.cardId.getText().toString(),
-                        binding.username.getText().toString(),
-                        binding.password.getText().toString(),
-                        1,
-                        convertUnitToNumber(nameShift),
-                        Integer.parseInt(binding.salary.getText().toString().replaceAll(AppConstant.DOT, ""))
-                )) > 0) {
-                    Toast.makeText(EditMemberActivity.this, "Sửa Nhân viên thành công", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(EditMemberActivity.this, "Sửa thất bại", Toast.LENGTH_SHORT).show();
+                if(isValid()){
+                    if (userController.editMember(new User(
+                            user.getId(),
+                            binding.name.getText().toString(),
+                            binding.phone.getText().toString(),
+                            binding.cardId.getText().toString(),
+                            binding.username.getText().toString(),
+                            binding.password.getText().toString(),
+                            1,
+                            convertUnitToNumber(nameShift),
+                            Integer.parseInt(binding.salary.getText().toString().replaceAll(AppConstant.DOT, ""))
+                    )) > 0) {
+                        Toast.makeText(EditMemberActivity.this, "Sửa Nhân viên thành công", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(EditMemberActivity.this, "Sửa thất bại", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -227,5 +230,39 @@ public class EditMemberActivity extends AppCompatActivity {
                 hasFractionalPart = false;
             }
         }
+    }
+
+    private boolean isValid() {
+        if (TextUtils.isEmpty(binding.username.getText().toString())) {
+            binding.username.setError("Tài khoản không được để trống");
+            return false;
+        } else if (binding.username.getText().toString().length() < 8 || binding.username.getText().toString().length() > 15) {
+            binding.username.setError("Tài khoản phải lớn hơn 8 kí tự và bé hơn 15 kí tự");
+            return false;
+        }
+        if (TextUtils.isEmpty(binding.name.getText().toString())) {
+            binding.name.setError("Tên không đc để trống");
+            return false;
+        }
+        if (TextUtils.isEmpty(binding.cardId.getText().toString())) {
+            binding.cardId.setError("Cccd không đc để trống");
+            return false;
+        }
+        if (TextUtils.isEmpty(binding.phone.getText().toString())) {
+            binding.phone.setError("Số điện thoại không đc để trống");
+            return false;
+        }
+        if (TextUtils.isEmpty(binding.password.getText().toString())) {
+            binding.password.setError("Mật khẩu không được để trống");
+            return false;
+        } else if (binding.password.getText().toString().length() < 8 || binding.password.getText().toString().length() > 15) {
+            binding.password.setError("Mật khẩu phải lớn hơn 8 kí tự và bé hơn 15 kí tự");
+            return false;
+        }
+        if (TextUtils.isEmpty(binding.salary.getText().toString())) {
+            binding.salary.setError("Tiền lương không đc để trống");
+            return false;
+        }
+        return true;
     }
 }

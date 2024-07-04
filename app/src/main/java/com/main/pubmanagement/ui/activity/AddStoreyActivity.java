@@ -9,30 +9,30 @@ import android.widget.Toast;
 
 import com.main.pubmanagement.R;
 import com.main.pubmanagement.controller.MenuTypeController;
-import com.main.pubmanagement.databinding.ActivityAddCategoryBinding;
+import com.main.pubmanagement.controller.StoreyController;
+import com.main.pubmanagement.databinding.ActivityAddStoreyBinding;
 import com.main.pubmanagement.model.MenuType;
 
-public class AddCategoryActivity extends AppCompatActivity {
-
-    private ActivityAddCategoryBinding binding;
-    private MenuTypeController menuTypeController;
+public class AddStoreyActivity extends AppCompatActivity {
+    private ActivityAddStoreyBinding binding;
+    private StoreyController storeyController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddCategoryBinding.inflate(getLayoutInflater());
+        binding = ActivityAddStoreyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initToolbar();
-        menuTypeController = new MenuTypeController(this);
+        storeyController = new StoreyController(this);
         binding.sumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isValid()) {
-                    if (menuTypeController.create(new MenuType(0, binding.edPhone.getText().toString())) > 0) {
-                        Toast.makeText(AddCategoryActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                    if (storeyController.create(binding.edPhone.getText().toString()) > 0) {
+                        Toast.makeText(AddStoreyActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
-                        Toast.makeText(AddCategoryActivity.this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddStoreyActivity.this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -40,7 +40,7 @@ public class AddCategoryActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        binding.toolBar.setTitle("Thêm loại mới");
+        binding.toolBar.setTitle("Thêm tầng/khu vực mới");
         binding.toolBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24);
         binding.toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +49,7 @@ public class AddCategoryActivity extends AppCompatActivity {
             }
         });
     }
+
     private boolean isValid() {
         if (TextUtils.isEmpty(binding.edPhone.getText().toString())) {
             binding.edPhone.setError("Không được để trống");

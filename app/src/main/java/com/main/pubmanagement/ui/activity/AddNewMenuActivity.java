@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -75,22 +76,24 @@ public class AddNewMenuActivity extends AppCompatActivity {
         binding.sumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (menuTypeController.createMenu(new Menu(
-                        binding.name.getText().toString(),
-                        Integer.parseInt(binding.price.getText().toString().replaceAll(AppConstant.DOT, "")),
-                        convertUnitToNumber(nameUnit),
-                        idMenuType,
-                        Integer.parseInt(binding.priceDiscount.getText().toString()),
-                        binding.content.getText().toString().equals("") ? null : binding.content.getText().toString(),
-                        Integer.parseInt(binding.count.getText().toString())
-                )) > 0) {
-                    Toast.makeText(AddNewMenuActivity.this, "Thêm món thành công", Toast.LENGTH_SHORT).show();
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("Another_Result_Key", "add_success");
-                    setResult(Activity.RESULT_OK, returnIntent);
-                    finish();
-                } else {
-                    Toast.makeText(AddNewMenuActivity.this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                if (isValid()) {
+                    if (menuTypeController.createMenu(new Menu(
+                            binding.name.getText().toString(),
+                            Integer.parseInt(binding.price.getText().toString().replaceAll(AppConstant.DOT, "")),
+                            convertUnitToNumber(nameUnit),
+                            idMenuType,
+                            binding.priceDiscount.getText().toString().equals("") ? 0 : Integer.parseInt(binding.priceDiscount.getText().toString()),
+                            binding.content.getText().toString().equals("") ? null : binding.content.getText().toString(),
+                            Integer.parseInt(binding.count.getText().toString())
+                    )) > 0) {
+                        Toast.makeText(AddNewMenuActivity.this, "Thêm món thành công", Toast.LENGTH_SHORT).show();
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra("Another_Result_Key", "add_success");
+                        setResult(Activity.RESULT_OK, returnIntent);
+                        finish();
+                    } else {
+                        Toast.makeText(AddNewMenuActivity.this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -191,5 +194,19 @@ public class AddNewMenuActivity extends AppCompatActivity {
                 hasFractionalPart = false;
             }
         }
+    }
+
+    private boolean isValid() {
+        if (TextUtils.isEmpty(binding.name.getText().toString())) {
+            binding.name.setError("Tên món không đc để trống");
+            return false;
+        } else if (TextUtils.isEmpty(binding.price.getText().toString())) {
+            binding.price.setError("Giá không đc để trống");
+            return false;
+        } else if (TextUtils.isEmpty(binding.count.getText().toString())) {
+            binding.price.setError("Số lượng không đc để trống");
+            return false;
+        }
+        return true;
     }
 }

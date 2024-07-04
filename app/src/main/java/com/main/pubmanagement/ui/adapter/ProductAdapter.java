@@ -44,9 +44,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             holder.binding.name.setText(item.getName());
             if (item.getDiscount() != 0) {
                 holder.binding.content.setVisibility(View.VISIBLE);
-                holder.binding.content.setText("Giảm giá: " + item.getDiscount() + "%");
+                holder.binding.content.setText("Giảm giá: " + item.getDiscount() + "%" + (item.getCount() ==0 ? " Hết hàng" :" Sl tồn: " + item.getCount()));
             } else {
-                holder.binding.content.setVisibility(View.GONE);
+                holder.binding.content.setText(item.getCount() ==0 ? " Hết hàng" :" Sl tồn: " + item.getCount());
+                holder.binding.content.setVisibility(View.VISIBLE);
             }
             holder.binding.price.setText(decimalFormat.format(item.getPrice()) + "₫");
             holder.binding.unit.setText(" /" + checkUnit(item.getUnit()));

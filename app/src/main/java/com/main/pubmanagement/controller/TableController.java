@@ -1,6 +1,7 @@
 package com.main.pubmanagement.controller;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,18 +26,32 @@ public class TableController implements TableDAO {
     }
 
     @Override
-    public void create(String name) {
-
+    public long create(String name, int countChair , int idStorey) {
+        this.sqLiteDatabase = mySqlHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AppConstant.COLUMN_RESTAURANT_NAME, name);
+        contentValues.put(AppConstant.COLUMN_RESTAURANT_STATUS, 0);
+        contentValues.put(AppConstant.COLUMN_RESTAURANT_COUNT_CHAIR, countChair);
+        contentValues.put(AppConstant.COLUMN_STOREY_ID, idStorey);
+        long result = this.sqLiteDatabase.insert(AppConstant.TABLE_TABLE_RESTAURANT, null, contentValues);
+        return result == -1 ? -1 : result;
     }
 
     @Override
-    public void update(int id, String name) {
-
+    public long update(int id, String name, int countChair) {
+        sqLiteDatabase = mySqlHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AppConstant.COLUMN_RESTAURANT_NAME, name);
+        contentValues.put(AppConstant.COLUMN_RESTAURANT_COUNT_CHAIR, countChair);
+        long result = sqLiteDatabase.update(AppConstant.TABLE_TABLE_RESTAURANT, contentValues, AppConstant.COLUMN_RESTAURANT_ID + " = ?", new String[]{String.valueOf(id)});
+        return result == -1 ? -1 : result;
     }
 
     @Override
-    public void create(int id) {
-
+    public void delete(int id) {
+        sqLiteDatabase = mySqlHelper.getWritableDatabase();
+        sqLiteDatabase.delete(AppConstant.TABLE_TABLE_RESTAURANT, AppConstant.COLUMN_RESTAURANT_ID + " = ?", new String[]{String.valueOf(id)});
+        sqLiteDatabase.close();
     }
 
 
